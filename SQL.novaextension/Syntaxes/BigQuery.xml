@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<syntax name="bigquery">
+  <meta>
+    <name>BigQuery</name>
+    <type>structured</type>
+    <preferred-file-extension>bigquery</preferred-file-extension>
+    <parent>sql</parent>
+  </meta>
+
+  <detectors>
+    <extension priority="1.0">bq,bigquery</extension>
+  </detectors>
+
+  <injection>
+    <expression>^```(?:bigquery)\b</expression>
+  </injection>
+
+  <comments>
+    <single>
+      <expression>--</expression>
+    </single>
+    <multiline>
+      <starts-with>
+        <expression>/\*</expression>
+      </starts-with>
+      <ends-with>
+        <expression>\*/</expression>
+      </ends-with>
+    </multiline>
+  </comments>
+
+  <indentation>
+    <increase>
+      <expression>\b(SELECT|BEGIN|CASE|LOOP|IF|WHILE)\b.*$</expression>
+    </increase>
+
+    <decrease>
+      <expression>^\s*(END(?:\s+(?:IF|LOOP|CASE|WHILE))?)\b</expression>
+    </decrease>
+  </indentation>
+
+  <tree-sitter language="sql">
+    <highlights path="highlights.scm" />
+    <folds path="folds.scm" />
+    <symbols path="symbols.scm" />
+  </tree-sitter>
+</syntax>

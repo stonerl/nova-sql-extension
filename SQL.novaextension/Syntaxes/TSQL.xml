@@ -1,0 +1,11 @@
+<syntax name="tsql">
+  <meta>
+    <name>Transact-SQL</name>
+    <type>structured</type>
+    <preferred-file-extension>tsql</preferred-file-extension>
+    <parent>sql</parent>
+  </meta>
+  <detectors>
+    <extension priority="1.0">tsql</extension>
+  </detectors>
+</syntax>

@@ -1,0 +1,11 @@
+<syntax name="trino">
+  <meta>
+    <name>Trino</name>
+    <type>structured</type>
+    <preferred-file-extension>trino.sql</preferred-file-extension>
+    <parent>sql</parent>
+  </meta>
+  <detectors>
+    <extension priority="1.0">trino.sql</extension>
+  </detectors>
+</syntax>

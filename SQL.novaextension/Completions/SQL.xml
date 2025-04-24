@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<completions>
+  <!--
+    Shared SQL completions, now with:
+    – case-insensitive sets
+    – trigger on "(" and "."
+  -->
+  <provider name="sql.statics">
+    <!-- apply to all SQL dialect syntaxes -->
+    <syntax>sql</syntax>
+    <syntax>postgresql</syntax>
+    <syntax>mysql</syntax>
+    <syntax>sqlite</syntax>
+    <syntax>plsql</syntax>
+    <syntax>sqlpl</syntax>
+    <syntax>tsql</syntax>
+    <syntax>hiveql</syntax>
+    <syntax>bigquery</syntax>
+    <syntax>snowflake</syntax>
+    <syntax>redshift</syntax>
+    <syntax>trino</syntax>
+    <syntax>singlestore</syntax>
+    <syntax>sparksql</syntax>
+    <syntax>flinksql</syntax>
+    <syntax>n1ql</syntax>
+
+    <!-- don’t trigger inside strings or comments -->
+    <exclude-selector>string, comment</exclude-selector>
+    <!-- trigger on “(” and “.” -->
+    <trigger>(.</trigger>
+    <!-- only trigger on identifiers, not numbers -->
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- all static sets offered -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+  </provider>
+
+  <!-- 1. SQL Keywords -->
+  <set name="sql.keywords" symbol="keyword" case-insensitive="true">
+    <completion string="SELECT" />
+    <completion string="FROM" />
+    <completion string="AS" />
+    <completion string="IN" />
+    <completion string="ON" />
+    <completion string="INTO" />
+    <completion string="VALUES" />
+    <completion string="SET" />
+    <completion string="DISTINCT" />
+    <completion string="ALL" />
+    <completion string="ANY" />
+    <completion string="SOME" />
+    <completion string="EXISTS" />
+    <completion string="BETWEEN" />
+    <completion string="LIKE" />
+    <completion string="IS" />
+    <completion string="IS NOT" />
+    <completion string="NULL" />
+    <completion string="IS NULL" />
+    <completion string="IS NOT NULL" />
+    <completion string="NOT" />
+    <completion string="AND" />
+    <completion string="OR" />
+    <completion string="CROSS APPLY" />
+    <completion string="OUTER APPLY" />
+    <completion string="INSERT" />
+    <completion string="UPDATE" />
+    <completion string="DELETE" />
+    <completion string="CREATE" />
+    <completion string="ALTER" />
+    <completion string="DROP" />
+    <completion string="TRUNCATE" />
+    <completion string="MERGE" />
+    <completion string="CALL" />
+    <completion string="EXPLAIN" />
+    <completion string="ANALYZE" />
+    <completion string="GRANT" />
+    <completion string="REVOKE" />
+    <completion string="COMMIT" />
+    <completion string="ROLLBACK" />
+    <completion string="SAVEPOINT" />
+    <completion string="WITH" />
+    <completion string="RECURSIVE" />
+    <completion string="UNION" />
+    <completion string="UNION ALL" />
+    <completion string="INTERSECT" />
+    <completion string="EXCEPT" />
+    <completion string="JOIN" />
+    <completion string="INNER JOIN" />
+    <completion string="LEFT JOIN" />
+    <completion string="RIGHT JOIN" />
+    <completion string="FULL JOIN" />
+    <completion string="CROSS JOIN" />
+    <completion string="NATURAL JOIN" />
+    <completion string="GROUP BY" />
+    <completion string="HAVING" />
+    <completion string="ORDER BY" />
+    <completion string="LIMIT" />
+    <completion string="USING" />
+    <completion string="OFFSET" />
+    <completion string="FETCH" />
+    <completion string="ASC" />
+    <completion string="DESC" />
+    <completion string="PARTITION BY" />
+    <completion string="OVER" />
+    <completion string="CASE" />
+    <completion string="WHEN" />
+    <completion string="THEN" />
+    <completion string="ELSE" />
+    <completion string="END" />
+    <completion string="COMMENT" />
+    <completion string="NULLS FIRST" />
+    <completion string="NULLS LAST" />
+    <completion string="BEGIN" />
+  </set>
+
+  <!-- 2. Common SQL Data Types -->
+  <set name="sql.datatypes" symbol="type" case-insensitive="true">
+    <completion string="TINYINT" />
+    <completion string="SMALLINT" />
+    <completion string="MEDIUMINT" />
+    <completion string="INT" />
+    <completion string="INTEGER" />
+    <completion string="BIGINT" />
+    <completion string="DECIMAL" />
+    <completion string="NUMERIC" />
+    <completion string="FLOAT" />
+    <completion string="REAL" />
+    <completion string="DOUBLE PRECISION" />
+    <completion string="BOOLEAN" />
+    <completion string="CHAR" />
+    <completion string="VARCHAR" />
+    <completion string="TEXT" />
+    <completion string="LONGTEXT" />
+    <completion string="DATE" />
+    <completion string="TIME" />
+    <completion string="TIMESTAMP" />
+    <completion string="TIMESTAMPTZ" />
+    <completion string="INTERVAL" />
+    <completion string="UUID" />
+    <completion string="JSON" />
+    <completion string="BLOB" />
+    <completion string="CLOB" />
+    <completion string="ARRAY" />
+    <completion string="VARBINARY" />
+    <completion string="BINARY" />
+    <completion string="ENUM" />
+    <completion string="SET" />
+    <completion string="BIT" />
+    <completion string="MONEY" />
+    <completion string="XML" />
+  </set>
+
+  <!-- 3. Built-in SQL Functions -->
+  <set name="sql.functions" symbol="function" case-insensitive="true">
+    <!-- auto-append "()" to each function -->
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="COALESCE" />
+    <completion string="NULLIF" />
+    <completion string="IFNULL" />
+    <completion string="NVL" />
+    <completion string="CONCAT" />
+    <completion string="LENGTH" />
+    <completion string="SUBSTRING" />
+    <completion string="LOWER" />
+    <completion string="UPPER" />
+    <completion string="TRIM" />
+    <completion string="REPLACE" />
+    <completion string="ROUND" />
+    <completion string="CEIL" />
+    <completion string="FLOOR" />
+    <completion string="ABS" />
+    <completion string="POWER" />
+    <completion string="SQRT" />
+    <completion string="EXP" />
+    <completion string="LOG" />
+    <completion string="LOG10" />
+    <completion string="SIN" />
+    <completion string="COS" />
+    <completion string="TAN" />
+    <completion string="DATE" />
+    <completion string="TIME" />
+    <completion string="NOW" />
+    <completion string="CURRENT_DATE" />
+    <completion string="CURRENT_TIME" />
+    <completion string="CURRENT_TIMESTAMP" />
+    <completion string="EXTRACT" />
+    <completion string="POSITION" />
+    <completion string="CHAR_LENGTH" />
+    <completion string="OCTET_LENGTH" />
+    <completion string="CAST" />
+  </set>
+
+  <!-- 4. Window & Aggregate Functions -->
+  <set name="sql.window_functions" symbol="function" case-insensitive="true">
+    <completion string="COUNT" />
+    <completion string="SUM" />
+    <completion string="AVG" />
+    <completion string="MIN" />
+    <completion string="MAX" />
+    <completion string="ROW_NUMBER" />
+    <completion string="RANK" />
+    <completion string="DENSE_RANK" />
+    <completion string="PERCENT_RANK" />
+    <completion string="NTILE" />
+    <completion string="LAG" />
+    <completion string="LEAD" />
+    <completion string="FIRST_VALUE" />
+    <completion string="LAST_VALUE" />
+    <completion string="CUME_DIST" />
+    <completion string="NTH_VALUE" />
+    <!-- window-frame clauses -->
+    <completion string="ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW" />
+    <completion
+      string="RANGE BETWEEN INTERVAL '1' DAY PRECEDING AND CURRENT ROW" />
+  </set>
+
+  <!-- 5. Snippets for Common Patterns -->
+  <set name="sql.snippets" symbol="snippet" case-insensitive="true">
+    <completion string="CREATE TABLE ${table} (${columns});" />
+    <completion string="INSERT INTO ${table} (${cols}) VALUES (${vals});" />
+    <completion
+      string="UPDATE ${table} SET ${col} = ${val} WHERE ${predicate};" />
+    <completion string="DELETE FROM ${table} WHERE ${predicate};" />
+    <completion string="CREATE OR REPLACE VIEW ${view} AS ${select};" />
+  </set>
+</completions>

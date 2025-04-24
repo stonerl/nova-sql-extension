@@ -1,0 +1,11 @@
+<syntax name="sqlite">
+  <meta>
+    <name>SQLite</name>
+    <type>structured</type>
+    <preferred-file-extension>sqlite</preferred-file-extension>
+    <parent>sql</parent>
+  </meta>
+  <detectors>
+    <extension priority="1.0">sqlite,sqlite3</extension>
+  </detectors>
+</syntax>

@@ -4,7 +4,7 @@
     <name>MySQL</name>
     <type>structured</type>
     <preferred-file-extension>mysql</preferred-file-extension>
-    <parent>sql</parent>
+    <parent>sql-generic"</parent>
   </meta>
 
   <detectors>
@@ -33,9 +33,8 @@
     <increase>
       <expression>\b(SELECT|BEGIN|CASE|LOOP|IF|WHILE)\b.*$</expression>
     </increase>
-
     <decrease>
-      <expression>^\s*(END(?:\s+(?:IF|LOOP|CASE|WHILE))?)\b</expression>
+      <expression>^\s*END\b</expression>
     </decrease>
   </indentation>
 

@@ -1,7 +1,13 @@
+; 0. SQL Comments
+((comment) @comment.line)           ; captures “-- comment” style node-types.json](file-service://file-8SxEekpqK4LVQEtdRcXCKL)
+((comment) @comment.block)          ; captures “/* comment */” style node-types.json](file-service://file-8SxEekpqK4LVQEtdRcXCKL)
+
+;; 1. Function invocations → map to function identifiers
 (invocation
   (object_reference
     name: (identifier) @identifier.function))
 
+;; 2. Low-level “index/array” functions treated as function identifiers
 [
   (keyword_gist)
   (keyword_btree)
@@ -12,6 +18,7 @@
   (keyword_array)
 ] @identifier.function
 
+;; 3. Schema-qualified and unqualified object references
 (object_reference
   schema: (identifier) @identifier.type
   "." @operator)
@@ -19,11 +26,14 @@
 (object_reference
   name: (identifier) @identifier.type)
 
+;; 4. Column definitions and shorthand
 (column_definition
   name: (identifier) @identifier.property)
 
-(column (identifier) @identifier.property)
+(column
+  (identifier) @identifier.property)
 
+;; 5. Table/relation aliasing
 (relation
   alias: (identifier) @identifier.variable)
 
@@ -33,11 +43,13 @@
 (term
   alias: (identifier) @identifier.variable)
 
+;; 6. In-term CAST expressions
 ((term
    value: (cast
-    name: (keyword_cast) @identifier.function
-    parameter: [(literal)]?)))
+     name: (keyword_cast) @identifier.function
+     parameter: [(literal)]?)))
 
+;; 7. Table‐level options (name/value pairs)
 (table_option
   name: (identifier) @identifier.property)
 
@@ -52,36 +64,41 @@
   value: (identifier) @value.number
     (#match? @value.number "^[-+]?\\d*\\.\\d*$"))
 
-
+;; 8. CREATE / DROP / ALTER … (<entity>) → typed identifiers
 (create_database (identifier) @identifier.type)
-(create_role (identifier) @identifier.type)
-(create_schema (identifier) @identifier.type)
+(create_role     (identifier) @identifier.type)
+(create_schema   (identifier) @identifier.type)
 
-(drop_database (identifier) @identifier.type)
-(drop_role (identifier) @identifier.type)
-(drop_schema (identifier) @identifier.type)
+(drop_database   (identifier) @identifier.type)
+(drop_role       (identifier) @identifier.type)
+(drop_schema     (identifier) @identifier.type)
 
-(alter_database (identifier) @identifier.type)
-(alter_role (identifier) @identifier.type)
-(alter_schema (identifier) @identifier.type)
+(alter_database  (identifier) @identifier.type)
+(alter_role      (identifier) @identifier.type)
+(alter_schema    (identifier) @identifier.type)
 
-(literal) @string
-(comment) @comment
+;; 9. String literals, comments, and marginalia
+(literal)    @string
+(comment)    @comment
 (marginalia) @comment
 
+;; 10. Numeric literals: integers & floats
 ((literal) @value.number
    (#match? @value.number "^[-+]?\\d+$"))
 
 ((literal) @value.number
   (#match? @value.number "^[-+]?\\d*\\.\\d*$"))
 
+;; 11. Parameter placeholders
 (parameter) @parameter
 
+;; 12. Boolean literals
 [
  (keyword_true)
  (keyword_false)
 ] @value.boolean
 
+;; 13. Keyword modifiers (ASC, DESC, UNSIGNED, etc.)
 [
  (keyword_asc)
  (keyword_desc)
@@ -112,24 +129,7 @@
  (keyword_strict)
 ] @keyword.modifier
 
-[
- (keyword_materialized)
- (keyword_recursive)
- (keyword_temp)
- (keyword_temporary)
- (keyword_unlogged)
- (keyword_external)
- (keyword_parquet)
- (keyword_csv)
- (keyword_rcfile)
- (keyword_textfile)
- (keyword_orc)
- (keyword_avro)
- (keyword_jsonfile)
- (keyword_sequencefile)
- (keyword_volatile)
-] @keyword.modifier
-
+;; 14. Conditional keywords (CASE…WHEN…THEN…ELSE)
 [
  (keyword_case)
  (keyword_when)
@@ -137,6 +137,7 @@
  (keyword_else)
 ] @keyword.condition
 
+;; 15. Core SQL keywords (SELECT, FROM, JOIN, etc.)
 [
   (keyword_select)
   (keyword_from)
@@ -183,9 +184,6 @@
   (keyword_for)
   (keyword_if)
   (keyword_exists)
-  (keyword_max)
-  (keyword_min)
-  (keyword_avg)
   (keyword_column)
   (keyword_columns)
   (keyword_cross)
@@ -231,7 +229,6 @@
   (keyword_current)
   (keyword_ties)
   (keyword_others)
-  (keyword_preserve)
   (keyword_zerofill)
   (keyword_format)
   (keyword_fields)
@@ -255,7 +252,6 @@
   (keyword_vacuum)
   (keyword_cache)
   (keyword_language)
-  (keyword_sql)
   (keyword_called)
   (keyword_conflict)
   (keyword_declare)
@@ -264,22 +260,15 @@
   (keyword_input)
   (keyword_name)
   (keyword_oid)
-  (keyword_oids)
-  (keyword_options)
-  (keyword_plpgsql)
-  (keyword_precision)
   (keyword_regclass)
   (keyword_regnamespace)
   (keyword_regproc)
   (keyword_regtype)
-  (keyword_restricted)
   (keyword_return)
   (keyword_returns)
-  (keyword_separator)
   (keyword_setof)
   (keyword_stable)
   (keyword_support)
-  (keyword_tblproperties)
   (keyword_trigger)
   (keyword_unsafe)
   (keyword_admin)
@@ -303,9 +292,6 @@
   (keyword_valid)
   (keyword_action)
   (keyword_definer)
-  (keyword_invoker)
-  (keyword_security)
-  (keyword_extension)
   (keyword_version)
   (keyword_out)
   (keyword_inout)
@@ -342,6 +328,7 @@
   (keyword_procedure)
 ] @keyword
 
+;; 16. Restrictive modifiers (RESTRICT, UNIQUE, CASCADE, etc.)
 [
  (keyword_restrict)
  (keyword_unbounded)
@@ -358,16 +345,14 @@
  (keyword_cascaded)
  (keyword_wait)
  (keyword_nowait)
- (keyword_metadata)
  (keyword_incremental)
- (keyword_bin_pack)
  (keyword_noscan)
- (keyword_stats)
  (keyword_statistics)
  (keyword_maxvalue)
  (keyword_minvalue)
 ] @keyword.modifier
 
+;; 17. Built-in storage/data-type keywords
 [
   (keyword_int)
   (keyword_null)
@@ -390,7 +375,6 @@
   (keyword_double)
   (keyword_numeric)
   (keyword_real)
-  (double)
   (keyword_money)
   (keyword_smallmoney)
   (keyword_char)
@@ -421,6 +405,7 @@
   (keyword_interval)
 ] @identifier.type.builtin
 
+;; 18. Logical/set operators as keywords
 [
   (keyword_in)
   (keyword_and)
@@ -434,6 +419,7 @@
   (keyword_intersect)
 ] @keyword
 
+;; 19. Arithmetic & comparison operators
 [
   "+"
   "-"
@@ -453,13 +439,59 @@
   (op_unary_other)
 ] @operator
 
+;; 20. Bracket characters
 [
   "("
   ")"
 ] @bracket
 
+;; 21. Statement delimiters (semicolon, comma, dot)
 [
   ";"
   ","
   "."
 ] @punctuation.delimiter
+
+;; 22. Infix/binary expressions
+(binary_expression) @operator
+
+;; 23. BETWEEN … AND …
+(between_expression) @operator
+
+;; 24. CASE … WHEN … THEN … ELSE … END
+(case) @keyword
+
+;; 25. CAST(…) AS …
+(cast
+  name: (keyword_cast) @support.function)
+
+;; 26. EXISTS(subquery)
+(exists) @keyword
+
+;; 27. INTERVAL literals
+(interval) @storage.type
+
+;; 28. Parenthesized & subquery expressions
+(parenthesized_expression) @punctuation.bracket
+(subquery)              @punctuation.bracket
+
+;; 29. Array subscripts & constructors
+(subscript) @punctuation.bracket
+(array)     @punctuation.bracket
+
+;; 30. Unary expressions (prefix operators)
+(unary_expression) @operator
+
+;; 31. Window functions
+(window_function) @support.function
+
+;; 32. Comma-separated lists
+(list) @punctuation.delimiter
+
+;; 33. Other operators (e.g. bitwise, concatenation)
+[(op_other) (op_unary_other)] @operator.other
+
+;; 99. Fallback: generic identifiers & literals
+(identifier) @text
+(literal)    @string
+(parameter)  @constant

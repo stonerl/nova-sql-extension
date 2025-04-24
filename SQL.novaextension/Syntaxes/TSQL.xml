@@ -3,9 +3,42 @@
     <name>Transact-SQL</name>
     <type>structured</type>
     <preferred-file-extension>tsql</preferred-file-extension>
-    <parent>sql</parent>
+    <parent>sql-generic</parent>
   </meta>
   <detectors>
     <extension priority="1.0">tsql</extension>
   </detectors>
+
+  <injection>
+    <expression>^```(?:tsql)\b</expression>
+  </injection>
+
+  <comments>
+    <single>
+      <expression>--</expression>
+    </single>
+    <multiline>
+      <starts-with>
+        <expression>/\*</expression>
+      </starts-with>
+      <ends-with>
+        <expression>\*/</expression>
+      </ends-with>
+    </multiline>
+  </comments>
+
+  <indentation>
+    <increase>
+      <expression>\b(SELECT|BEGIN|CASE|LOOP|IF|WHILE)\b.*$</expression>
+    </increase>
+    <decrease>
+      <expression>^\s*END\b</expression>
+    </decrease>
+  </indentation>
+
+  <tree-sitter language="sql">
+    <highlights path="highlights.scm" />
+    <folds path="folds.scm" />
+    <symbols path="symbols.scm" />
+  </tree-sitter>
 </syntax>

@@ -115,6 +115,13 @@
     <completion string="NULLS FIRST" />
     <completion string="NULLS LAST" />
     <completion string="BEGIN" />
+    <completion string="RETURNING" />
+    <completion string="DEFAULT" />
+    <completion string="IGNORE" />
+    <completion string="REPLACE" />
+    <completion string="LOCK IN SHARE MODE" />
+    <completion string="FOR UPDATE" />
+    <completion string="DELIMITER" />
   </set>
 
   <!-- 2. Common SQL Data Types -->
@@ -194,6 +201,12 @@
     <completion string="CHAR_LENGTH" />
     <completion string="OCTET_LENGTH" />
     <completion string="CAST" />
+    <completion string="MOD" />
+    <completion string="GREATEST" />
+    <completion string="LEAST" />
+    <completion string="NOW()" />
+    <completion string="CURRENT_USER" />
+    <completion string="SESSION_USER" />
   </set>
 
   <!-- 4. Window & Aggregate Functions -->
@@ -222,6 +235,10 @@
 
   <!-- 5. Snippets for Common Patterns -->
   <set name="sql.snippets" symbol="snippet" case-insensitive="true">
+    <completion string="BEGIN\n  ${statements}\nEND;" />
+    <completion string="CREATE PROCEDURE ${name} AS BEGIN ${body} END;" />
+    <completion string="DECLARE ${var} ${type} := ${value};" />
+    <completion string="IF ${condition} THEN\n  ${statements}\nEND IF;" />
     <completion string="CREATE TABLE ${table} (${columns});" />
     <completion string="INSERT INTO ${table} (${cols}) VALUES (${vals});" />
     <completion

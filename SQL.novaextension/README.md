@@ -1,46 +1,41 @@
-<!--
-👋 Hello! As Nova users browse the extensions library, a good README can help them understand what your extension does, how it works, and what setup or configuration it may require.
+# SQL Language Extension for Nova
 
-Not every extension will need every item described below. Use your best judgement when deciding which parts to keep to provide the best experience for your new users.
+Provides advanced SQL syntax highlighting and editing support in Nova using
+[Tree-sitter SQL](https://github.com/DerekStride/tree-sitter-sql).
 
-💡 Quick Tip! As you edit this README template, you can preview your changes by selecting **Extensions → Activate Project as Extension**, opening the Extension Library, and selecting "SQL" in the sidebar.
+## Tree-sitter Parser
 
-Let's get started!
--->
+This extension uses the [Tree-sitter SQL parser](https://github.com/DerekStride/tree-sitter-sql)
+by [Derek Stride](https://github.com/DerekStride) for precise and performant syntax
+highlighting and code folding.
 
-<!--
-🎈 Include a brief description of the features your syntax extension provides. For example:
--->
+## Supported SQL Dialects
 
-**SQL** provides syntax highlighting and autocompletion for **An Important Language**.
+- Generic SQL
+- MySQL / MariaDB
+- PostgreSQL
+- SQLite
+- T-SQL
+- PL/SQL
+- N1QL
+- Trino
+- Redshift
+- SingleStore
+- Snowflake
+- SparkSQL
 
-<!--
-🎈 It can also be helpful to include a screenshot or GIF showing your extension in action:
--->
+## Recognized File Extensions
 
-![](https://nova.app/images/en/dark/editor.png)
+The extension automatically recognizes files with these extensions:
 
-## Language Support
+```text
+.sql, .ddl, .tsql, .psql, .pgsql, .mysql, .hqsql, .hql, .q,
+.pls, .bdy, .fnc, .pck, .pkb, .pks, .plb, .plsql, .prc, .spc, .tpb, .tps, .trg, .vw,
+.db2, .db2i, .cql, .inc, .tab, .udf, .viw,
+.sqlite, .sqlite3, .bq, .bigquery,
+.sf.sql, .rs.sql, .trino.sql, .singlestore.sql,
+.spark.sql, .flink.sql, .flinksql, .n1ql, .mariadb.sql
+```
 
-<!--
-🎈 Whether your extension covers the entirety of a language's syntax or a subset, it can be helpful to describe that for users:
--->
-
-SQL currently supports the following features of Important Language:
-
-- Lorem
-- Ipsum
-- Dolor
-
-Support for:
-
-- Sit
-- Amet 
-
-is planned for a future update.
-
-<!--
-👋 That's it! Happy developing!
-
-P.S. If you'd like, you can remove these comments before submitting your extension 😉
--->
+This ensures seamless integration with your existing SQL files without additional
+configuration.

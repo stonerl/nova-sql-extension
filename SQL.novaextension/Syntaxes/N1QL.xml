@@ -12,7 +12,7 @@
   </detectors>
 
   <injection>
-    <expression>^```(?:n1ql)\b</expression>
+    <expression>(?i)^(n1ql|couchbase)$</expression>
   </injection>
 
   <comments>

@@ -12,7 +12,7 @@
   </detectors>
 
   <injection>
-    <expression>^```(?:sparksql)\b</expression>
+    <expression>(?i)^(sparksql|spark)$</expression>
   </injection>
 
   <comments>

@@ -12,7 +12,7 @@
   </detectors>
 
   <injection>
-    <expression>^```(?:flinksql)\b</expression>
+    <expression>(?i)^(flink|flinksql)$</expression>
   </injection>
 
   <comments>

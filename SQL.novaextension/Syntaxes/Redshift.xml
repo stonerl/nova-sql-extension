@@ -12,7 +12,7 @@
   </detectors>
 
   <injection>
-    <expression>^```(?:redshift)\b</expression>
+    <expression>(?i)^redshift$</expression>
   </injection>
 
   <comments>

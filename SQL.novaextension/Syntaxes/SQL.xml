@@ -11,7 +11,7 @@
   </detectors>
 
   <injection>
-    <expression>^```(?:sql)\b</expression>
+    <expression>(?i)^sql$</expression>
   </injection>
 
   <comments>

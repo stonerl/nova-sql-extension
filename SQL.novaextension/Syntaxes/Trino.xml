@@ -10,7 +10,7 @@
   </detectors>
 
   <injection>
-    <expression>^```(?:trino)\b</expression>
+    <expression>(trino|Trino)$</expression>
   </injection>
 
   <comments>

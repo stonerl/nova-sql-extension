@@ -12,7 +12,7 @@
   </detectors>
 
   <injection>
-    <expression>^```(?:singlestore)\b</expression>
+    <expression>(?i)^(singlestore|memsql)$</expression>
   </injection>
 
   <comments>

@@ -10,7 +10,7 @@
   </detectors>
 
   <injection>
-    <expression>^```(?:tsql)\b</expression>
+    <expression>(tsql|TSQL)$</expression>
   </injection>
 
   <comments>

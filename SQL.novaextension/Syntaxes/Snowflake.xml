@@ -12,7 +12,7 @@
   </detectors>
 
   <injection>
-    <expression>^```(?:snowflake)\b</expression>
+    <expression>(?i)^snowflake$</expression>
   </injection>
 
   <comments>

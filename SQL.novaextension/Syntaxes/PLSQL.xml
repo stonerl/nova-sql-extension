@@ -14,7 +14,7 @@
   </detectors>
 
   <injection>
-    <expression>^```(?:plsql)\b</expression>
+    <expression>(?i)^(plsql|oracle)$</expression>
   </injection>
 
   <comments>

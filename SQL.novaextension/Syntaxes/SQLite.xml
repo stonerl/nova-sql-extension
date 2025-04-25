@@ -12,7 +12,7 @@
   </detectors>
 
   <injection>
-    <expression>^```(?:sqlite)\b</expression>
+    <expression>(sqlite|sqlite3|SQLite)$</expression>
   </injection>
 
   <comments>

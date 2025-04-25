@@ -12,7 +12,7 @@
   </detectors>
 
   <injection>
-    <expression>^```(?:hiveql)\b</expression>
+    <expression>(?i)^(hive|hiveql)$</expression>
   </injection>
 
   <comments>

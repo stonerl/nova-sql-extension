@@ -30,10 +30,32 @@
 
   <indentation>
     <increase>
-      <expression>\b(SELECT|BEGIN|CASE|LOOP|IF|WHILE)\b.*$</expression>
+      <!-- Block openers -->
+      <expression>
+        \b(BEGIN|IF|CASE|WHILE|DO|FUNCTION|PROCEDURE|DECLARE|BEGIN
+        TRANSACTION)\b.*$
+      </expression>
+
+      <!-- Multi-line expressions with open parentheses -->
+      <expression>.*\(\s*$</expression>
+
+      <!-- Common multiline clauses -->
+      <expression>
+        ^\s*\b(SELECT|INSERT|UPDATE|DELETE|VALUES|RETURNING|INTO|SET)\b.*\(\s*$
+      </expression>
     </increase>
+
     <decrease>
-      <expression>^\s*END\b</expression>
+      <!-- Block closers -->
+      <expression>
+        ^\s*\b(END|END IF|END LOOP|END CASE|END TRANSACTION)\b.*$
+      </expression>
+
+      <!-- Closing parens -->
+      <expression>^\s*\)\s*$</expression>
+
+      <!-- Function/procedure ends -->
+      <expression>^\s*END\s*(FUNCTION|PROCEDURE)?\b.*$</expression>
     </decrease>
   </indentation>
 

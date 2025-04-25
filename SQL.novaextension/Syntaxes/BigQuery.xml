@@ -4,7 +4,6 @@
     <name>BigQuery</name>
     <type>structured</type>
     <preferred-file-extension>bigquery</preferred-file-extension>
-    <parent>sql-generic</parent>
   </meta>
 
   <detectors>
@@ -31,10 +30,39 @@
 
   <indentation>
     <increase>
-      <expression>\b(SELECT|BEGIN|CASE|LOOP|IF|WHILE)\b.*$</expression>
+      <!-- BEGIN block structures -->
+      <expression>
+        \b(BEGIN|IF|CASE|LOOP|WHILE|REPEAT|TRY|THEN|DO|BEGIN TRY|BEGIN
+        CATCH|BEGIN TRANSACTION)\b.*$
+      </expression>
+
+      <!-- Common SQL expressions with nested clauses or values -->
+      <expression>
+        \b(SELECT|VALUES|SET|RETURNING|INTO|IN|WITH)\b.*\(\s*$
+      </expression>
+
+      <!-- BigQuery-specific constructs -->
+      <expression>\b(STRUCT|ARRAY|AS STRUCT|AS ARRAY)\b.*\(\s*$</expression>
+
+      <!-- WHEN, ELSE, etc. for control-flow -->
+      <expression>^\s*(WHEN|ELSE|ELSIF|EXCEPTION|CATCH)\b.*$</expression>
+
+      <!-- Open parenthesis -->
+      <expression>.*\(\s*$</expression>
     </increase>
+
     <decrease>
-      <expression>^\s*END\b</expression>
+      <!-- Block endings -->
+      <expression>
+        ^\s*(END|END IF|END LOOP|END CASE|END TRY|END CATCH|END
+        TRANSACTION|UNTIL|CATCH|ELSE|ELSIF|WHEN|EXCEPTION)\b.*$
+      </expression>
+
+      <!-- BigQuery STRUCT/ARRAY/SELECT closing parens -->
+      <expression>^\s*\)\s*$</expression>
+
+      <!-- End of function or procedure -->
+      <expression>^\s*END\s*(FUNCTION|PROCEDURE)?\b.*$</expression>
     </decrease>
   </indentation>
 

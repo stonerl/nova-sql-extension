@@ -4,7 +4,6 @@
     <name>N1QL (Couchbase)</name>
     <type>structured</type>
     <preferred-file-extension>n1ql</preferred-file-extension>
-    <parent>sql-generic</parent>
   </meta>
 
   <detectors>
@@ -31,10 +30,30 @@
 
   <indentation>
     <increase>
-      <expression>\b(SELECT|BEGIN|CASE|LOOP|IF|WHILE)\b.*$</expression>
+      <!-- Control blocks or DML/DDL with blocks -->
+      <expression>
+        \b(BEGIN|IF|CASE|LOOP|WHILE|REPEAT|THEN|FUNCTION|PROCEDURE|TRANSACTION)\b.*$
+      </expression>
+
+      <!-- JSON object and array starts -->
+      <expression>[\[{]\s*$</expression>
+
+      <!-- Function calls or nested SELECTs with open parenthesis -->
+      <expression>.*\(\s*$</expression>
+
+      <!-- Multi-line clauses like SELECT, VALUES, RETURNING, WHERE, etc. -->
+      <expression>
+        ^\s*\b(SELECT|INSERT|UPSERT|UPDATE|DELETE|MERGE|VALUES|RETURNING|SET|WHERE|LET|FROM|GROUP
+        BY|ORDER BY|USE KEYS|KEY|NEST|JOIN|UNNEST|ON)\b.*$
+      </expression>
     </increase>
+
     <decrease>
-      <expression>^\s*END\b</expression>
+      <!-- END of control structures -->
+      <expression>^\s*\b(END|END IF|END CASE|UNTIL)\b.*$</expression>
+
+      <!-- JSON object/array and function call closers -->
+      <expression>^\s*[\]})]\s*$</expression>
     </decrease>
   </indentation>
 

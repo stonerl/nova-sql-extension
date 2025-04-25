@@ -3,7 +3,6 @@
     <name>Transact-SQL</name>
     <type>structured</type>
     <preferred-file-extension>tsql</preferred-file-extension>
-    <parent>sql-generic</parent>
   </meta>
   <detectors>
     <extension priority="1.0">tsql</extension>
@@ -29,10 +28,24 @@
 
   <indentation>
     <increase>
-      <expression>\b(SELECT|BEGIN|CASE|LOOP|IF|WHILE)\b.*$</expression>
+      <!-- BEGIN is used for CTEs or transactions -->
+      <expression>\b(BEGIN|CASE|IF|THEN)\b.*$</expression>
+
+      <!-- Multi-line expressions or nested functions -->
+      <expression>.*\(\s*$</expression>
+
+      <!-- Clause-based continuation -->
+      <expression>
+        ^\s*(SELECT|FROM|WHERE|GROUP\s+BY|ORDER\s+BY|HAVING|WINDOW|VALUES|WITH|OVER|PARTITION\s+BY|ROWS|RANGE)\b.*$
+      </expression>
     </increase>
+
     <decrease>
-      <expression>^\s*END\b</expression>
+      <!-- Keywords that close a logical structure -->
+      <expression>^\s*\b(END|END\s+IF|WHEN|ELSE)\b.*$</expression>
+
+      <!-- Closing parens -->
+      <expression>^\s*\)\s*$</expression>
     </decrease>
   </indentation>
 

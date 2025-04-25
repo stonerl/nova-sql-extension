@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<syntax name="redshift">
+<syntax name="hivesql">
   <meta>
-    <name>Redshift</name>
+    <name>HiveSQL</name>
     <type>structured</type>
-    <preferred-file-extension>rs.sql</preferred-file-extension>
+    <preferred-file-extension>hql</preferred-file-extension>
   </meta>
 
   <detectors>
-    <extension priority="1.0">rs.sql</extension>
+    <extension priority="1.0">hql,hqsql,q</extension>
   </detectors>
 
   <injection>
-    <expression>(?i)^redshift$</expression>
+    <expression>(?i)^(hive|hiveql)$</expression>
   </injection>
 
   <comments>
@@ -30,41 +30,36 @@
 
   <indentation>
     <increase>
-      <!-- Control and block openers -->
+      <!-- Begin block structures -->
       <expression>
-        \b(BEGIN|IF|CASE|LOOP|WHILE|REPEAT|THEN|DO|BEGIN TRY|BEGIN
-        CATCH|FUNCTION|PROCEDURE|DECLARE|BEGIN TRANSACTION|TRY)\b.*$
+        \b(BEGIN|IF|LOOP|WHILE|CASE|TRY|THEN|DO|DECLARE|BEGIN TRY|BEGIN
+        CATCH|FUNCTION|PROCEDURE|BEGIN TRANSACTION)\b.*$
       </expression>
 
-      <!-- Open parentheses (multi-line expressions) -->
+      <!-- Common multiline statement starters -->
+      <expression>
+        \b(SELECT|VALUES|SET|INTO|WITH|AS|ARRAY|MAP|STRUCT|UNIONTYPE)\b.*\(\s*$
+      </expression>
+
+      <!-- Control-flow segments -->
+      <expression>^\s*\b(WHEN|ELSE|ELSIF|EXCEPTION|CATCH)\b.*$</expression>
+
+      <!-- Any line ending with open parens for complex expressions -->
       <expression>.*\(\s*$</expression>
-
-      <!-- Nested clauses and control-flow triggers -->
-      <expression>
-        ^\s*\b(WHEN|ELSE|ELSIF|EXCEPTION|CATCH|PARTITION BY|OVER|QUALIFY)\b.*$
-      </expression>
-
-      <!-- DML statements with inline structures -->
-      <expression>
-        ^\s*(VALUES|SELECT|SET|RETURNING|INTO|IN)\b.*\(\s*$
-      </expression>
     </increase>
 
     <decrease>
-      <!-- Block endings -->
+      <!-- Block closers -->
       <expression>
         ^\s*\b(END|END IF|END LOOP|END CASE|END TRY|END CATCH|END
-        TRANSACTION|UNTIL)\b.*$
+        TRANSACTION|UNTIL|CATCH|WHEN|ELSE|ELSIF|EXCEPTION)\b.*$
       </expression>
 
       <!-- Closing parentheses -->
       <expression>^\s*\)\s*$</expression>
 
-      <!-- Function or procedure closers -->
+      <!-- Function/procedure endings -->
       <expression>^\s*END\s*(FUNCTION|PROCEDURE)?\b.*$</expression>
-
-      <!-- Control clauses ending nested structures -->
-      <expression>^\s*\b(CATCH|ELSE|ELSIF|WHEN|EXCEPTION)\b.*$</expression>
     </decrease>
   </indentation>
 

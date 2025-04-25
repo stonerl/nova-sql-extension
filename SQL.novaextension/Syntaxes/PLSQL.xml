@@ -4,7 +4,6 @@
     <name>PL/SQL</name>
     <type>structured</type>
     <preferred-file-extension>plsql</preferred-file-extension>
-    <parent>sql-generic</parent>
   </meta>
 
   <detectors>
@@ -33,10 +32,33 @@
 
   <indentation>
     <increase>
-      <expression>\b(SELECT|BEGIN|CASE|LOOP|IF|WHILE)\b.*$</expression>
+      <!-- Common PL/SQL block openers -->
+      <expression>
+        \b(BEGIN|IF|THEN|LOOP|WHILE|FOR|CASE|EXCEPTION|DECLARE|FUNCTION|PROCEDURE|PACKAGE
+        BODY|TRIGGER)\b.*$
+      </expression>
+
+      <!-- Open parentheses or multiline expressions -->
+      <expression>.*\(\s*$</expression>
+
+      <!-- Start of WHEN/ELSE/ELSIF/EXCEPTION blocks -->
+      <expression>^\s*\b(WHEN|ELSE|ELSIF|EXCEPTION)\b.*$</expression>
     </increase>
+
     <decrease>
-      <expression>^\s*END\b</expression>
+      <!-- Block closers -->
+      <expression>
+        ^\s*\b(END|END IF|END LOOP|END CASE|END;|END FUNCTION|END PROCEDURE|END
+        PACKAGE|END TRIGGER)\b.*$
+      </expression>
+
+      <!-- Closing parenthesis -->
+      <expression>^\s*\)\s*$</expression>
+
+      <!-- One-liner terminators that may reduce indent -->
+      <expression>
+        ^\s*END\s*(IF|LOOP|CASE|FUNCTION|PROCEDURE|PACKAGE|TRIGGER)?\s*;?\s*$
+      </expression>
     </decrease>
   </indentation>
 

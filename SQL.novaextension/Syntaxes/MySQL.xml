@@ -4,7 +4,6 @@
     <name>MySQL</name>
     <type>structured</type>
     <preferred-file-extension>mysql</preferred-file-extension>
-    <parent>sql-generic"</parent>
   </meta>
 
   <detectors>
@@ -31,10 +30,36 @@
 
   <indentation>
     <increase>
-      <expression>\b(SELECT|BEGIN|CASE|LOOP|IF|WHILE)\b.*$</expression>
+      <!-- Block starters -->
+      <expression>
+        \b(BEGIN|IF|CASE|LOOP|WHILE|REPEAT|TRY|THEN|DO|BEGIN TRY|BEGIN
+        CATCH|FUNCTION|PROCEDURE|DECLARE|BEGIN TRANSACTION)\b.*$
+      </expression>
+
+      <!-- Multi-line control clauses -->
+      <expression>^\s*\b(WHEN|ELSE|ELSIF|EXCEPTION|CATCH)\b.*$</expression>
+
+      <!-- Function calls, expressions, etc. -->
+      <expression>.*\(\s*$</expression>
+
+      <!-- Complex query starters -->
+      <expression>
+        ^\s*(VALUES|SELECT|SET|RETURNING|INTO|IN|FROM|WHERE|ON|USING|WITH)\b.*\(\s*$
+      </expression>
     </increase>
+
     <decrease>
-      <expression>^\s*END\b</expression>
+      <!-- Block enders -->
+      <expression>
+        ^\s*\b(END|END IF|END LOOP|END CASE|END TRY|END CATCH|END
+        TRANSACTION|UNTIL|CATCH|ELSE|ELSIF|WHEN|EXCEPTION)\b.*$
+      </expression>
+
+      <!-- Closing parentheses alone on a line -->
+      <expression>^\s*\)\s*$</expression>
+
+      <!-- Function/procedure block closure -->
+      <expression>^\s*END\s*(FUNCTION|PROCEDURE)?\b.*$</expression>
     </decrease>
   </indentation>
 

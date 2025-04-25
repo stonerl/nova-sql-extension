@@ -4,7 +4,6 @@
     <name>SQL PL (DB2)</name>
     <type>structured</type>
     <preferred-file-extension>db2</preferred-file-extension>
-    <parent>sql-generic</parent>
   </meta>
 
   <detectors>
@@ -31,10 +30,36 @@
 
   <indentation>
     <increase>
-      <expression>\b(SELECT|BEGIN|CASE|LOOP|IF|WHILE)\b.*$</expression>
+      <!-- Block openers and control flow -->
+      <expression>
+        \b(BEGIN|IF|CASE|LOOP|WHILE|REPEAT|TRY|THEN|DO|BEGIN\s+TRY|BEGIN\s+CATCH|FUNCTION|PROCEDURE|DECLARE|BEGIN\s+TRANSACTION|LABEL)\b.*$
+      </expression>
+
+      <!-- Multi-line expressions with open parentheses -->
+      <expression>.*\(\s*$</expression>
+
+      <!-- Control-flow statements that often span multiple lines -->
+      <expression>
+        ^\s*\b(WHEN|ELSE|ELSIF|EXCEPTION|CATCH|CALL|GOTO)\b.*$
+      </expression>
+
+      <!-- Complex values or multiline clauses -->
+      <expression>
+        ^\s*(VALUES|SELECT|SET|RETURNING|INTO|IN|FROM|WHERE|GROUP\s+BY|ORDER\s+BY|HAVING|ON)\b.*\(\s*$
+      </expression>
     </increase>
+
     <decrease>
-      <expression>^\s*END\b</expression>
+      <!-- Block closers -->
+      <expression>
+        ^\s*\b(END|END\s+IF|END\s+LOOP|END\s+CASE|END\s+TRY|END\s+CATCH|END\s+TRANSACTION|UNTIL|CATCH|ELSE|ELSIF|WHEN|EXCEPTION|LEAVE)\b.*$
+      </expression>
+
+      <!-- Closing parens -->
+      <expression>^\s*\)\s*$</expression>
+
+      <!-- End of function/procedure -->
+      <expression>^\s*END\s+(FUNCTION|PROCEDURE)?\b.*$</expression>
     </decrease>
   </indentation>
 

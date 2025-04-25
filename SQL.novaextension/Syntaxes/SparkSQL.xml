@@ -4,7 +4,6 @@
     <name>Spark SQL</name>
     <type>structured</type>
     <preferred-file-extension>spark.sql</preferred-file-extension>
-    <parent>sql-generic</parent>
   </meta>
 
   <detectors>
@@ -31,10 +30,34 @@
 
   <indentation>
     <increase>
-      <expression>\b(SELECT|BEGIN|CASE|LOOP|IF|WHILE)\b.*$</expression>
+      <!-- Control blocks and flow structures -->
+      <expression>
+        \b(BEGIN|IF|CASE|LOOP|WHILE|REPEAT|TRY|THEN|DO|FUNCTION|PROCEDURE|DECLARE|BEGIN\s+TRANSACTION)\b.*$
+      </expression>
+
+      <!-- Statements introducing multi-line bodies -->
+      <expression>^\s*\b(WHEN|ELSE|CATCH|EXCEPTION)\b.*$</expression>
+
+      <!-- Expressions with opening parenthesis -->
+      <expression>.*\(\s*$</expression>
+
+      <!-- Nested DML / expressions -->
+      <expression>
+        ^\s*(VALUES|SELECT|SET|RETURNING|INTO|IN)\b.*\(\s*$
+      </expression>
     </increase>
+
     <decrease>
-      <expression>^\s*END\b</expression>
+      <!-- Block and conditional closers -->
+      <expression>
+        ^\s*\b(END|END\s+IF|END\s+LOOP|END\s+CASE|END\s+TRY|END\s+CATCH|END\s+TRANSACTION|UNTIL|ELSE|WHEN|EXCEPTION|CATCH)\b.*$
+      </expression>
+
+      <!-- Closing parentheses -->
+      <expression>^\s*\)\s*$</expression>
+
+      <!-- Procedure/function closures -->
+      <expression>^\s*END\s+(FUNCTION|PROCEDURE)?\b.*$</expression>
     </decrease>
   </indentation>
 

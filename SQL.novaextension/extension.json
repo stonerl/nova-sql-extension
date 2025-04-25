@@ -3,7 +3,7 @@
   "name": "SQL",
   "organization": "Toni Förster",
   "description": "SQL language support for Nova editor — Tree-sitter syntax highlighting, code folding, and completions for multiple dialects.",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "MIT License",
   "funding": "https://github.com/sponsors/stonerl",
   "repository": "https://github.com/stonerl/nova-sql-extension",

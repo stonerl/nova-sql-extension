@@ -1,3 +1,9 @@
+## 1.1.1 – 2025‑04‑25
+
+### Added
+
+- added `WHERE` keyword to completions
+
 ## 1.1.0 – 2025‑04‑25
 
 ### Changed

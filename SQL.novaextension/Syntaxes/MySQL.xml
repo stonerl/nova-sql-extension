@@ -66,6 +66,5 @@
   <tree-sitter language="sql">
     <highlights path="highlights.scm" />
     <folds path="folds.scm" />
-    <symbols path="symbols.scm" />
   </tree-sitter>
 </syntax>

@@ -108,6 +108,7 @@
     <completion string="OVER" />
     <completion string="CASE" />
     <completion string="WHEN" />
+    <completion string="WHERE" />
     <completion string="THEN" />
     <completion string="ELSE" />
     <completion string="END" />

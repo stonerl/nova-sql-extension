@@ -69,7 +69,7 @@
   </indentation>
 
   <tree-sitter language="sql">
-    <highlights path="highlights.scm" />
-    <folds path="folds.scm" />
+    <highlights />
+    <folds />
   </tree-sitter>
 </syntax>

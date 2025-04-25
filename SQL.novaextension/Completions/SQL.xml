@@ -1,37 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <completions>
-  <!--
-    Shared SQL completions, now with:
-    – case-insensitive sets
-    – trigger on "(" and "."
-  -->
-  <provider name="sql.statics">
-    <!-- apply to all SQL dialect syntaxes -->
-    <syntax>sql</syntax>
-    <syntax>postgresql</syntax>
-    <syntax>mysql</syntax>
-    <syntax>sqlite</syntax>
-    <syntax>plsql</syntax>
-    <syntax>sqlpl</syntax>
-    <syntax>tsql</syntax>
-    <syntax>hiveql</syntax>
-    <syntax>bigquery</syntax>
-    <syntax>snowflake</syntax>
-    <syntax>redshift</syntax>
-    <syntax>trino</syntax>
-    <syntax>singlestore</syntax>
-    <syntax>sparksql</syntax>
-    <syntax>flinksql</syntax>
-    <syntax>n1ql</syntax>
-
-    <!-- don’t trigger inside strings or comments -->
+  <!-- ============================= -->
+  <!-- 1. ANSI-GENERIC (sql-generic) -->
+  <!-- ============================= -->
+  <provider name="sql-generic">
+    <syntax>sql-generic</syntax>
     <exclude-selector>string, comment</exclude-selector>
-    <!-- trigger on “(” and “.” -->
     <trigger>(.</trigger>
-    <!-- only trigger on identifiers, not numbers -->
     <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
 
-    <!-- all static sets offered -->
+    <!-- only true ANSI-SQL sets here -->
     <set>sql.keywords</set>
     <set>sql.datatypes</set>
     <set>sql.functions</set>
@@ -39,44 +17,35 @@
     <set>sql.snippets</set>
   </provider>
 
-  <!-- 1. SQL Keywords -->
+  <!-- ANSI keywords (SQL:2011/2016) -->
   <set name="sql.keywords" symbol="keyword" case-insensitive="true">
     <completion string="SELECT" />
     <completion string="FROM" />
-    <completion string="AS" />
-    <completion string="IN" />
-    <completion string="ON" />
-    <completion string="INTO" />
-    <completion string="VALUES" />
-    <completion string="SET" />
-    <completion string="DISTINCT" />
-    <completion string="ALL" />
-    <completion string="ANY" />
-    <completion string="SOME" />
-    <completion string="EXISTS" />
-    <completion string="BETWEEN" />
-    <completion string="LIKE" />
-    <completion string="IS" />
-    <completion string="IS NOT" />
-    <completion string="NULL" />
-    <completion string="IS NULL" />
-    <completion string="IS NOT NULL" />
-    <completion string="NOT" />
-    <completion string="AND" />
-    <completion string="OR" />
-    <completion string="CROSS APPLY" />
-    <completion string="OUTER APPLY" />
+    <completion string="WHERE" />
+    <completion string="GROUP BY" />
+    <completion string="HAVING" />
+    <completion string="ORDER BY" />
+    <completion string="JOIN" />
+    <completion string="INNER JOIN" />
+    <completion string="LEFT JOIN" />
+    <completion string="RIGHT JOIN" />
+    <completion string="FULL JOIN" />
+    <completion string="CROSS JOIN" />
+    <completion string="UNION" />
+    <completion string="UNION ALL" />
+    <completion string="INTERSECT" />
+    <completion string="EXCEPT" />
     <completion string="INSERT" />
+    <completion string="VALUES" />
     <completion string="UPDATE" />
     <completion string="DELETE" />
     <completion string="CREATE" />
     <completion string="ALTER" />
     <completion string="DROP" />
-    <completion string="TRUNCATE" />
     <completion string="MERGE" />
+    <completion string="TRUNCATE" />
     <completion string="CALL" />
     <completion string="EXPLAIN" />
-    <completion string="ANALYZE" />
     <completion string="GRANT" />
     <completion string="REVOKE" />
     <completion string="COMMIT" />
@@ -84,94 +53,43 @@
     <completion string="SAVEPOINT" />
     <completion string="WITH" />
     <completion string="RECURSIVE" />
-    <completion string="UNION" />
-    <completion string="UNION ALL" />
-    <completion string="INTERSECT" />
-    <completion string="EXCEPT" />
-    <completion string="JOIN" />
-    <completion string="INNER JOIN" />
-    <completion string="LEFT JOIN" />
-    <completion string="RIGHT JOIN" />
-    <completion string="FULL JOIN" />
-    <completion string="CROSS JOIN" />
-    <completion string="NATURAL JOIN" />
-    <completion string="GROUP BY" />
-    <completion string="HAVING" />
-    <completion string="ORDER BY" />
+    <completion string="CASE" />
+    <completion string="WHEN" />
+    <completion string="THEN" />
+    <completion string="ELSE" />
+    <completion string="END" />
     <completion string="LIMIT" />
-    <completion string="USING" />
     <completion string="OFFSET" />
     <completion string="FETCH" />
     <completion string="ASC" />
     <completion string="DESC" />
-    <completion string="PARTITION BY" />
-    <completion string="OVER" />
-    <completion string="CASE" />
-    <completion string="WHEN" />
-    <completion string="WHERE" />
-    <completion string="THEN" />
-    <completion string="ELSE" />
-    <completion string="END" />
-    <completion string="COMMENT" />
-    <completion string="NULLS FIRST" />
-    <completion string="NULLS LAST" />
-    <completion string="BEGIN" />
-    <completion string="RETURNING" />
-    <completion string="DEFAULT" />
-    <completion string="IGNORE" />
-    <completion string="REPLACE" />
-    <completion string="LOCK IN SHARE MODE" />
-    <completion string="FOR UPDATE" />
-    <completion string="DELIMITER" />
   </set>
 
-  <!-- 2. Common SQL Data Types -->
+  <!-- ANSI data types -->
   <set name="sql.datatypes" symbol="type" case-insensitive="true">
-    <completion string="TINYINT" />
     <completion string="SMALLINT" />
-    <completion string="MEDIUMINT" />
-    <completion string="INT" />
     <completion string="INTEGER" />
     <completion string="BIGINT" />
     <completion string="DECIMAL" />
     <completion string="NUMERIC" />
-    <completion string="FLOAT" />
     <completion string="REAL" />
     <completion string="DOUBLE PRECISION" />
     <completion string="BOOLEAN" />
     <completion string="CHAR" />
     <completion string="VARCHAR" />
-    <completion string="TEXT" />
-    <completion string="LONGTEXT" />
     <completion string="DATE" />
     <completion string="TIME" />
     <completion string="TIMESTAMP" />
-    <completion string="TIMESTAMPTZ" />
     <completion string="INTERVAL" />
-    <completion string="UUID" />
-    <completion string="JSON" />
-    <completion string="BLOB" />
-    <completion string="CLOB" />
-    <completion string="ARRAY" />
-    <completion string="VARBINARY" />
-    <completion string="BINARY" />
-    <completion string="ENUM" />
-    <completion string="SET" />
-    <completion string="BIT" />
-    <completion string="MONEY" />
-    <completion string="XML" />
   </set>
 
-  <!-- 3. Built-in SQL Functions -->
+  <!-- ANSI functions -->
   <set name="sql.functions" symbol="function" case-insensitive="true">
-    <!-- auto-append "()" to each function -->
     <behavior suffix="$">
       <append>()</append>
     </behavior>
     <completion string="COALESCE" />
     <completion string="NULLIF" />
-    <completion string="IFNULL" />
-    <completion string="NVL" />
     <completion string="CONCAT" />
     <completion string="LENGTH" />
     <completion string="SUBSTRING" />
@@ -191,12 +109,6 @@
     <completion string="SIN" />
     <completion string="COS" />
     <completion string="TAN" />
-    <completion string="DATE" />
-    <completion string="TIME" />
-    <completion string="NOW" />
-    <completion string="CURRENT_DATE" />
-    <completion string="CURRENT_TIME" />
-    <completion string="CURRENT_TIMESTAMP" />
     <completion string="EXTRACT" />
     <completion string="POSITION" />
     <completion string="CHAR_LENGTH" />
@@ -205,12 +117,14 @@
     <completion string="MOD" />
     <completion string="GREATEST" />
     <completion string="LEAST" />
-    <completion string="NOW()" />
+    <completion string="CURRENT_DATE" />
+    <completion string="CURRENT_TIME" />
+    <completion string="CURRENT_TIMESTAMP" />
     <completion string="CURRENT_USER" />
     <completion string="SESSION_USER" />
   </set>
 
-  <!-- 4. Window & Aggregate Functions -->
+  <!-- ANSI window & aggregate functions -->
   <set name="sql.window_functions" symbol="function" case-insensitive="true">
     <completion string="COUNT" />
     <completion string="SUM" />
@@ -228,13 +142,10 @@
     <completion string="LAST_VALUE" />
     <completion string="CUME_DIST" />
     <completion string="NTH_VALUE" />
-    <!-- window-frame clauses -->
     <completion string="ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW" />
-    <completion
-      string="RANGE BETWEEN INTERVAL '1' DAY PRECEDING AND CURRENT ROW" />
   </set>
 
-  <!-- 5. Snippets for Common Patterns -->
+  <!-- ANSI snippets remain shared -->
   <set name="sql.snippets" symbol="snippet" case-insensitive="true">
     <completion string="BEGIN\n  ${statements}\nEND;" />
     <completion string="CREATE PROCEDURE ${name} AS BEGIN ${body} END;" />
@@ -246,5 +157,664 @@
       string="UPDATE ${table} SET ${col} = ${val} WHERE ${predicate};" />
     <completion string="DELETE FROM ${table} WHERE ${predicate};" />
     <completion string="CREATE OR REPLACE VIEW ${view} AS ${select};" />
+  </set>
+
+  <!-- ================ -->
+  <!-- 2. MYSQL LAYER -->
+  <!-- ================ -->
+  <provider name="sql-mysql">
+    <syntax>mysql</syntax>
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- MySQL extras -->
+    <set>sql.mysql_keywords</set>
+    <set>sql.mysql_datatypes</set>
+    <set>sql.mysql_functions</set>
+  </provider>
+
+  <set name="sql.mysql_keywords" symbol="keyword" case-insensitive="true">
+    <completion string="DELIMITER" />
+    <completion string="IGNORE" />
+    <completion string="REPLACE" />
+    <completion string="LOCK IN SHARE MODE" />
+  </set>
+  <set name="sql.mysql_datatypes" symbol="type" case-insensitive="true">
+    <completion string="TINYINT" />
+    <completion string="MEDIUMINT" />
+    <completion string="TEXT" />
+    <completion string="LONGTEXT" />
+    <completion string="BLOB" />
+    <completion string="ENUM" />
+    <completion string="SET" />
+    <completion string="VARBINARY" />
+    <completion string="BINARY" />
+  </set>
+  <set name="sql.mysql_functions" symbol="function" case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="IFNULL" />
+    <completion string="DATEDIFF" />
+    <completion string="CONCAT_WS" />
+    <completion string="NOW" />
+  </set>
+
+  <!-- =================== -->
+  <!-- 3. POSTGRES LAYER -->
+  <!-- =================== -->
+  <provider name="sql-postgresql">
+    <syntax>postgresql</syntax>
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- Postgres extras -->
+    <set>sql.pg_datatypes</set>
+    <set>sql.pg_functions</set>
+  </provider>
+
+  <set name="sql.pg_datatypes" symbol="type" case-insensitive="true">
+    <completion string="UUID" />
+    <completion string="JSONB" />
+    <completion string="SERIAL" />
+    <completion string="BIGSERIAL" />
+    <completion string="TEXT" />
+    <completion string="BYTEA" />
+  </set>
+  <set name="sql.pg_functions" symbol="function" case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="NOW" />
+    <completion string="TO_CHAR" />
+    <completion string="AGE" />
+  </set>
+
+  <!-- ================ -->
+  <!-- 4. T-SQL LAYER    -->
+  <!-- ================ -->
+  <provider name="sql-tsql">
+    <syntax>tsql</syntax>
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- T-SQL extras -->
+    <set>sql.tsql_keywords</set>
+    <set>sql.tsql_datatypes</set>
+  </provider>
+
+  <set name="sql.tsql_keywords" symbol="keyword" case-insensitive="true">
+    <completion string="CROSS APPLY" />
+    <completion string="OUTER APPLY" />
+  </set>
+  <set name="sql.tsql_datatypes" symbol="type" case-insensitive="true">
+    <completion string="MONEY" />
+  </set>
+
+  <!-- ================== -->
+  <!-- 5. ORACLE LAYER   -->
+  <!-- ================== -->
+  <provider name="sql-oracle">
+    <syntax>plsql</syntax>
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- Oracle extras -->
+    <set>sql.oracle_datatypes</set>
+    <set>sql.oracle_functions</set>
+  </provider>
+
+  <set name="sql.oracle_datatypes" symbol="type" case-insensitive="true">
+    <completion string="CLOB" />
+  </set>
+  <set name="sql.oracle_functions" symbol="function" case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="NVL" />
+  </set>
+
+  <!-- ================== -->
+  <!-- 6. DB2 LAYER       -->
+  <!-- ================== -->
+  <provider name="sql-db2">
+    <syntax>sqlpl</syntax>
+    <!-- IBM DB2’s SQL PL -->
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- DB2 extras -->
+    <set>sql.db2_datatypes</set>
+    <set>sql.db2_functions</set>
+    <set>sql.db2_keywords</set>
+  </provider>
+
+  <set name="sql.db2_keywords" symbol="keyword" case-insensitive="true">
+    <completion string="COLLECT" />
+    <completion string="MERGE" />
+    <completion string="SYSPROC" />
+    <!-- …etc… -->
+  </set>
+
+  <set name="sql.db2_datatypes" symbol="type" case-insensitive="true">
+    <completion string="DECFLOAT" />
+    <completion string="GRAPHIC" />
+    <completion string="VARGRAPHIC" />
+    <!-- …etc… -->
+  </set>
+
+  <set name="sql.db2_functions" symbol="function" case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="XMLCAST" />
+    <completion string="XMLQUERY" />
+    <!-- …etc… -->
+  </set>
+
+  <!-- ================ -->
+  <!-- 7. SQLITE LAYER  -->
+  <!-- ================ -->
+  <provider name="sql-sqlite">
+    <syntax>sqlite</syntax>
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- SQLite extras -->
+    <set>sql.sqlite_keywords</set>
+    <set>sql.sqlite_datatypes</set>
+    <set>sql.sqlite_functions</set>
+  </provider>
+
+  <set name="sql.sqlite_keywords" symbol="keyword" case-insensitive="true">
+    <completion string="AUTOINCREMENT" />
+    <completion string="WITHOUT ROWID" />
+    <completion string="PRAGMA" />
+  </set>
+  <set name="sql.sqlite_datatypes" symbol="type" case-insensitive="true">
+    <completion string="NUMERIC" />
+    <completion string="BLOB" />
+    <completion string="REAL" />
+    <completion string="TEXT" />
+    <completion string="INTEGER" />
+  </set>
+  <set name="sql.sqlite_functions" symbol="function" case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="JULIANDAY" />
+    <completion string="STRFTIME" />
+    <completion string="DATE" />
+    <completion string="TIME" />
+    <completion string="DATETIME" />
+  </set>
+
+  <!-- ================ -->
+  <!-- 8. HIVEQL LAYER   -->
+  <!-- ================ -->
+  <provider name="sql-hiveql">
+    <syntax>hivesql</syntax>
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- HiveQL extras -->
+    <set>sql.hiveql_keywords</set>
+    <set>sql.hiveql_datatypes</set>
+    <set>sql.hiveql_functions</set>
+  </provider>
+
+  <set name="sql.hiveql_keywords" symbol="keyword" case-insensitive="true">
+    <completion string="LATERAL VIEW" />
+    <completion string="TRANSFORM" />
+    <completion string="MAPJOIN" />
+    <completion string="CLUSTER BY" />
+    <completion string="DISTRIBUTE BY" />
+    <completion string="SORT BY" />
+    <completion string="SERDE" />
+    <completion string="ROW FORMAT" />
+    <completion string="STORED AS" />
+  </set>
+  <set name="sql.hiveql_datatypes" symbol="type" case-insensitive="true">
+    <completion string="STRING" />
+    <completion string="TINYINT" />
+    <completion string="SMALLINT" />
+    <completion string="MAP" />
+    <completion string="ARRAY" />
+    <completion string="STRUCT" />
+    <completion string="DECIMAL" />
+  </set>
+  <set name="sql.hiveql_functions" symbol="function" case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="UNIX_TIMESTAMP" />
+    <completion string="FROM_UNIXTIME" />
+    <completion string="DATE_FORMAT" />
+    <completion string="EXPLODE" />
+    <completion string="SIZE" />
+  </set>
+
+  <!-- ===================== -->
+  <!-- 9. BIGQUERY LAYER     -->
+  <!-- ===================== -->
+  <provider name="sql-bigquery">
+    <syntax>bigquery</syntax>
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- BigQuery extras -->
+    <set>sql.bigquery_keywords</set>
+    <set>sql.bigquery_datatypes</set>
+    <set>sql.bigquery_functions</set>
+  </provider>
+
+  <set name="sql.bigquery_keywords" symbol="keyword" case-insensitive="true">
+    <completion string="STRUCT" />
+    <completion string="UNNEST" />
+    <completion string="SAFE_OFFSET" />
+    <completion string="SAFE_ORDINAL" />
+    <completion string="EXPORT DATA" />
+    <completion string="OPTIONS" />
+  </set>
+  <set name="sql.bigquery_datatypes" symbol="type" case-insensitive="true">
+    <completion string="GEOGRAPHY" />
+    <completion string="ARRAY" />
+    <completion string="STRUCT" />
+    <completion string="BYTES" />
+  </set>
+  <set name="sql.bigquery_functions" symbol="function" case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="TO_JSON_STRING" />
+    <completion string="PARSE_DATE" />
+    <completion string="PARSE_TIMESTAMP" />
+    <completion string="SAFE_CAST" />
+    <completion string="GENERATE_DATE_ARRAY" />
+    <completion string="ST_DISTANCE" />
+  </set>
+
+  <!-- ====================== -->
+  <!-- 10. SNOWFLAKE LAYER    -->
+  <!-- ====================== -->
+  <provider name="sql-snowflake">
+    <syntax>snowflake</syntax>
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- Snowflake extras -->
+    <set>sql.snowflake_keywords</set>
+    <set>sql.snowflake_datatypes</set>
+    <set>sql.snowflake_functions</set>
+  </provider>
+
+  <set name="sql.snowflake_keywords" symbol="keyword" case-insensitive="true">
+    <completion string="WAREHOUSE" />
+    <completion string="STREAM" />
+    <completion string="TASK" />
+    <completion string="ROLE" />
+    <completion string="CLONE" />
+  </set>
+  <set name="sql.snowflake_datatypes" symbol="type" case-insensitive="true">
+    <completion string="VARIANT" />
+    <completion string="OBJECT" />
+    <completion string="ARRAY" />
+    <completion string="GEOGRAPHY" />
+    <completion string="TIMESTAMP_LTZ" />
+    <completion string="TIMESTAMP_NTZ" />
+  </set>
+  <set name="sql.snowflake_functions" symbol="function" case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="ARRAY_AGG" />
+    <completion string="OBJECT_AGG" />
+    <completion string="TO_VARIANT" />
+    <completion string="SYSTEM$CLUSTERING_INFORMATION" />
+  </set>
+
+  <!-- ====================== -->
+  <!-- 11. REDSHIFT LAYER     -->
+  <!-- ====================== -->
+  <provider name="sql-redshift">
+    <syntax>redshift</syntax>
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- Redshift extras -->
+    <set>sql.redshift_keywords</set>
+    <set>sql.redshift_datatypes</set>
+    <set>sql.redshift_functions</set>
+  </provider>
+
+  <set name="sql.redshift_keywords" symbol="keyword" case-insensitive="true">
+    <completion string="DISTSTYLE" />
+    <completion string="DISTKEY" />
+    <completion string="SORTKEY" />
+    <completion string="INTERLEAVED" />
+    <completion string="VACUUM" />
+    <completion string="ANALYZE" />
+  </set>
+  <set name="sql.redshift_datatypes" symbol="type" case-insensitive="true">
+    <completion string="SUPER" />
+    <completion string="IDENTITY" />
+    <completion string="INT8" />
+  </set>
+  <set name="sql.redshift_functions" symbol="function" case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="SYS_EXTRACT_UTC" />
+    <completion string="GETDATE" />
+  </set>
+
+  <!-- ====================== -->
+  <!-- 12. TRINO LAYER        -->
+  <!-- ====================== -->
+  <provider name="sql-trino">
+    <syntax>trino</syntax>
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- Trino extras -->
+    <set>sql.trino_keywords</set>
+    <set>sql.trino_datatypes</set>
+    <set>sql.trino_functions</set>
+  </provider>
+
+  <set name="sql.trino_keywords" symbol="keyword" case-insensitive="true">
+    <completion string="CATALOG" />
+    <completion string="SCHEMA" />
+    <completion string="TABLESAMPLE" />
+    <completion string="MATERIALIZED" />
+    <completion string="PREPARE" />
+    <completion string="EXECUTE" />
+  </set>
+  <set name="sql.trino_datatypes" symbol="type" case-insensitive="true">
+    <completion string="JSON" />
+    <completion string="ROW" />
+    <completion string="VARBINARY" />
+    <completion string="UUID" />
+  </set>
+  <set name="sql.trino_functions" symbol="function" case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="approx_distinct" />
+    <completion string="approx_percentile" />
+    <completion string="from_iso8601_timestamp" />
+    <completion string="date_diff" />
+  </set>
+
+  <!-- ====================== -->
+  <!-- 13. SINGLESTORE LAYER  -->
+  <!-- ====================== -->
+  <provider name="sql-singlestore">
+    <syntax>singlestore</syntax>
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- SingleStore extras -->
+    <set>sql.singlestore_keywords</set>
+    <set>sql.singlestore_datatypes</set>
+    <set>sql.singlestore_functions</set>
+  </provider>
+
+  <set name="sql.singlestore_keywords" symbol="keyword" case-insensitive="true">
+    <completion string="LOOKUP" />
+    <completion string="STREAM" />
+    <completion string="SPLIT_ROWS" />
+  </set>
+  <set name="sql.singlestore_datatypes" symbol="type" case-insensitive="true">
+    <completion string="GEOMETRY" />
+    <completion string="POINT" />
+    <completion string="LINESTRING" />
+    <completion string="POLYGON" />
+  </set>
+  <set
+    name="sql.singlestore_functions"
+    symbol="function"
+    case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="GROUP_ARRAY" />
+    <completion string="JSON_EXTRACT_SCALAR" />
+    <completion string="MEMORY_BYTES" />
+  </set>
+
+  <!-- ====================== -->
+  <!-- 14. SPARKSQL LAYER     -->
+  <!-- ====================== -->
+  <provider name="sql-sparksql">
+    <syntax>sparksql</syntax>
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- SparkSQL extras -->
+    <set>sql.sparksql_keywords</set>
+    <set>sql.sparksql_datatypes</set>
+    <set>sql.sparksql_functions</set>
+  </provider>
+
+  <set name="sql.sparksql_keywords" symbol="keyword" case-insensitive="true">
+    <completion string="BUCKET" />
+    <completion string="CLUSTERED BY" />
+    <completion string="SORTED BY" />
+    <completion string="PARTITIONED BY" />
+    <completion string="LATERAL VIEW OUTER" />
+  </set>
+  <set name="sql.sparksql_datatypes" symbol="type" case-insensitive="true">
+    <completion string="MAP" />
+    <completion string="ARRAY" />
+    <completion string="STRUCT" />
+    <completion string="BINARY" />
+    <completion string="BYTE" />
+  </set>
+  <set name="sql.sparksql_functions" symbol="function" case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="explode" />
+    <completion string="posexplode" />
+    <completion string="get_json_object" />
+    <completion string="from_json" />
+    <completion string="to_json" />
+  </set>
+
+  <!-- ====================== -->
+  <!-- 15. FLINKSQL LAYER     -->
+  <!-- ====================== -->
+  <provider name="sql-flinksql">
+    <syntax>flinksql</syntax>
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- FlinkSQL extras -->
+    <set>sql.flinksql_keywords</set>
+    <set>sql.flinksql_datatypes</set>
+    <set>sql.flinksql_functions</set>
+  </provider>
+
+  <set name="sql.flinksql_keywords" symbol="keyword" case-insensitive="true">
+    <completion string="WATERMARK" />
+    <completion string="SINK" />
+    <completion string="SOURCE" />
+    <completion string="DESCRIPTOR" />
+    <completion string="FORMAT" />
+    <completion string="OPTIONS" />
+    <completion string="PARTITIONED BY" />
+  </set>
+  <set name="sql.flinksql_datatypes" symbol="type" case-insensitive="true">
+    <completion string="ROW" />
+    <completion string="MAP" />
+    <completion string="ARRAY" />
+    <completion string="DECIMAL" />
+    <completion string="TIMESTAMP_LTZ(3)" />
+  </set>
+  <set name="sql.flinksql_functions" symbol="function" case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="JSON_VALUE" />
+    <completion string="PROCTIME" />
+    <completion string="ROWTIME" />
+    <completion string="TUMBLE" />
+    <completion string="HOP" />
+  </set>
+
+  <!-- ====================== -->
+  <!-- 16. N1QL LAYER         -->
+  <!-- ====================== -->
+  <provider name="sql-n1ql">
+    <syntax>n1ql</syntax>
+    <exclude-selector>string, comment</exclude-selector>
+    <trigger>(.</trigger>
+    <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>
+
+    <!-- ANSI core -->
+    <set>sql.keywords</set>
+    <set>sql.datatypes</set>
+    <set>sql.functions</set>
+    <set>sql.window_functions</set>
+    <set>sql.snippets</set>
+
+    <!-- N1QL extras -->
+    <set>sql.n1ql_keywords</set>
+    <set>sql.n1ql_datatypes</set>
+    <set>sql.n1ql_functions</set>
+  </provider>
+
+  <set name="sql.n1ql_keywords" symbol="keyword" case-insensitive="true">
+    <completion string="USE KEYS" />
+    <completion string="USE INDEX" />
+    <completion string="META" />
+    <completion string="OBJECT_PAIRS" />
+  </set>
+  <set name="sql.n1ql_datatypes" symbol="type" case-insensitive="true">
+    <completion string="OBJECT" />
+    <completion string="ARRAY" />
+    <completion string="RAW" />
+  </set>
+  <set name="sql.n1ql_functions" symbol="function" case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="ARRAY_LENGTH" />
+    <completion string="OBJECT_LENGTH" />
+    <completion string="DATE_ADD_MILLIS" />
+    <completion string="DATE_DIFF_MILLIS" />
   </set>
 </completions>

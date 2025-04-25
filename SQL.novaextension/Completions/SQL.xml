@@ -401,7 +401,7 @@
   <!-- 8. HIVEQL LAYER   -->
   <!-- ================ -->
   <provider name="sql-hiveql">
-    <syntax>hivesql</syntax>
+    <syntax>hiveql</syntax>
     <exclude-selector>string, comment</exclude-selector>
     <trigger>(.</trigger>
     <expression>\b[A-Za-z_][A-Za-z0-9_]*$</expression>

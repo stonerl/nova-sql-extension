@@ -1,3 +1,9 @@
+## 1.2.1 – 2025-04-26
+
+### Fixed
+
+- Corrected syntax name from `hivesql` -> `hiveql`
+
 ## 1.2.0 – 2025-04-25
 
 ### Added

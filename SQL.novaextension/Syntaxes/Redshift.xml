@@ -71,5 +71,6 @@
   <tree-sitter language="sql">
     <highlights />
     <folds />
+    <symbols />
   </tree-sitter>
 </syntax>

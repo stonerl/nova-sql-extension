@@ -1,3 +1,28 @@
+## 1.3.0 – 2026-09-27
+
+### Added
+
+- **Queries**: highlighted new v0.3.11 grammar keywords (`RLIKE`, `WHILE`,
+  `POLICY`, `REFRESH`, `PUBLIC`, `INCLUDE`, `SPLIT`, `TABLETS`,
+  `CURRENT_ROLE`, plus RLS modifiers); symbolicated stored procedures and
+  row-level security policies; folded procedure bodies and `WHILE` loops
+- **Completions**: RLIKE/REGEXP/DEFINER for MySQL, policy-keyword set for
+  PostgreSQL, `OBJECT_ID` for T-SQL, `SPLIT TABLETS INCLUDE RLIKE` for
+  SingleStore; new snippets for procedures, materialized views, RLS
+  policies and `WHILE` loops
+
+### Changed
+
+- Updated the `tree-sitter-sql` grammar submodule (DerekStride) to the
+  `gh-pages` deployment tip (v0.3.11), parser ABI 15
+- Rebuilt `Syntaxes/libtree-sitter-sql.dylib` as a universal binary
+  (arm64 + x86_64) linked against Nova's SyntaxKit framework; the dylib
+  is now signed with a Developer ID so macOS accepts it when the
+  extension is loaded on other machines
+- Vendor build tooling under `scripts/` (`compile_parser.sh` + `Makefile`,
+  courtesy of Panic) so the parser can be rebuilt with:
+  `./scripts/compile_parser.sh tree-sitter-sql /Applications/Nova.app`
+
 ## 1.2.1 – 2025-04-26
 
 ### Fixed

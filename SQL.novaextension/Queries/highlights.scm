@@ -124,10 +124,14 @@
  (keyword_atomic)
  (keyword_parallel)
  (keyword_leakproof)
- (keyword_safe)
- (keyword_cost)
- (keyword_strict)
-] @keyword.modifier
+  (keyword_safe)
+  (keyword_cost)
+  (keyword_strict)
+  (keyword_enable)
+  (keyword_disable)
+  (keyword_permissive)
+  (keyword_restrictive)
+ ] @keyword.modifier
 
 ;; 14. Conditional keywords (CASE…WHEN…THEN…ELSE)
 [
@@ -135,6 +139,7 @@
  (keyword_when)
  (keyword_then)
  (keyword_else)
+ (keyword_while)
 ] @keyword.condition
 
 ;; 15. Core SQL keywords (SELECT, FROM, JOIN, etc.)
@@ -216,6 +221,7 @@
   (keyword_transaction)
   (keyword_only)
   (keyword_like)
+  (keyword_rlike)
   (keyword_similar)
   (keyword_over)
   (keyword_change)
@@ -223,6 +229,13 @@
   (keyword_after)
   (keyword_before)
   (keyword_range)
+  (keyword_policy)
+  (keyword_refresh)
+  (keyword_public)
+  (keyword_include)
+  (keyword_split)
+  (keyword_tablets)
+  (keyword_current_role)
   (keyword_rows)
   (keyword_groups)
   (keyword_exclude)

@@ -34,6 +34,16 @@
 (#set! role block)
 (#set! scope.byLine)
 
+;; Fold procedure bodies (BEGIN ... END inside CREATE PROCEDURE, v0.3.11)
+(procedure_body) @subtree
+(#set! role block)
+(#set! scope.byLine)
+
+;; Fold WHILE loops (v0.3.11)
+(while_statement) @subtree
+(#set! role block)
+(#set! scope.byLine)
+
 (subquery) @subtree
 (#set! role block)
 (#set! scope.byLine)

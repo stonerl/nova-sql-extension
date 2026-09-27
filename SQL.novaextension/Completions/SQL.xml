@@ -157,6 +157,13 @@
       string="UPDATE ${table} SET ${col} = ${val} WHERE ${predicate};" />
     <completion string="DELETE FROM ${table} WHERE ${predicate};" />
     <completion string="CREATE OR REPLACE VIEW ${view} AS ${select};" />
+    <completion
+      string="CREATE PROCEDURE ${name} (${params}) AS BEGIN ${body} END;" />
+    <completion string="CREATE MATERIALIZED VIEW ${view} AS ${select};" />
+    <completion string="REFRESH MATERIALIZED VIEW ${view};" />
+    <completion
+      string="CREATE POLICY ${name} ON ${table} FOR ALL USING (${predicate});" />
+    <completion string="WHILE ${condition} DO\n  ${statements}\nEND WHILE;" />
   </set>
 
   <!-- ================ -->
@@ -186,6 +193,9 @@
     <completion string="IGNORE" />
     <completion string="REPLACE" />
     <completion string="LOCK IN SHARE MODE" />
+    <completion string="RLIKE" />
+    <completion string="REGEXP" />
+    <completion string="DEFINER" />
   </set>
   <set name="sql.mysql_datatypes" symbol="type" case-insensitive="true">
     <completion string="TINYINT" />
@@ -227,6 +237,7 @@
     <!-- Postgres extras -->
     <set>sql.pg_datatypes</set>
     <set>sql.pg_functions</set>
+    <set>sql.pg_keywords</set>
   </provider>
 
   <set name="sql.pg_datatypes" symbol="type" case-insensitive="true">
@@ -244,6 +255,14 @@
     <completion string="NOW" />
     <completion string="TO_CHAR" />
     <completion string="AGE" />
+  </set>
+  <set name="sql.pg_keywords" symbol="keyword" case-insensitive="true">
+    <completion string="POLICY" />
+    <completion string="PERMISSIVE" />
+    <completion string="RESTRICTIVE" />
+    <completion string="PUBLIC" />
+    <completion string="CURRENT_ROLE" />
+    <completion string="REFRESH MATERIALIZED VIEW" />
   </set>
 
   <!-- ================ -->
@@ -265,6 +284,7 @@
     <!-- T-SQL extras -->
     <set>sql.tsql_keywords</set>
     <set>sql.tsql_datatypes</set>
+    <set>sql.tsql_functions</set>
   </provider>
 
   <set name="sql.tsql_keywords" symbol="keyword" case-insensitive="true">
@@ -273,6 +293,12 @@
   </set>
   <set name="sql.tsql_datatypes" symbol="type" case-insensitive="true">
     <completion string="MONEY" />
+  </set>
+  <set name="sql.tsql_functions" symbol="function" case-insensitive="true">
+    <behavior suffix="$">
+      <append>()</append>
+    </behavior>
+    <completion string="OBJECT_ID" />
   </set>
 
   <!-- ================== -->
@@ -660,6 +686,10 @@
     <completion string="LOOKUP" />
     <completion string="STREAM" />
     <completion string="SPLIT_ROWS" />
+    <completion string="SPLIT" />
+    <completion string="TABLETS" />
+    <completion string="INCLUDE" />
+    <completion string="RLIKE" />
   </set>
   <set name="sql.singlestore_datatypes" symbol="type" case-insensitive="true">
     <completion string="GEOMETRY" />

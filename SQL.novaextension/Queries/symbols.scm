@@ -56,6 +56,26 @@
 )
 
 ; ——————————————————————————————
+; Stored Procedures (v0.3.11)
+; ——————————————————————————————
+(
+  (create_procedure
+     (object_reference) @name
+  ) @subtree
+  (#set! role function)
+)
+
+; ——————————————————————————————
+; Row-Level Security Policies (v0.3.11)
+; ——————————————————————————————
+(
+  (create_policy
+     (object_reference) @name
+  ) @subtree
+  (#set! role type)
+)
+
+; ——————————————————————————————
 ; Common Table Expressions (WITH … AS …)
 ; ——————————————————————————————
 (
@@ -63,4 +83,11 @@
      (identifier) @name
   ) @subtree
   (#set! role struct)
+)
+
+(
+  (select
+     (keyword_select) @name
+  ) @subtree
+  (#set! role enum-member)
 )

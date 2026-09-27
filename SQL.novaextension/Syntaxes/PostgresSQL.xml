@@ -8,6 +8,11 @@
 
   <detectors>
     <extension priority="1.0">pgsql,psql</extension>
+      <!-- Dialect hint: first-line comment overrides extension-based
+         detection for ambiguous files (e.g. plain .sql). -->
+    <match-content
+      lines="1"
+      priority="1.0">(?i)^\s*--\s*(?:@|syntax:\s*)postgresql\b</match-content>
   </detectors>
 
   <injection>

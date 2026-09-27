@@ -1,0 +1,57 @@
+-- Google BigQuery test file (syntax: bigquery)
+CREATE TABLE project.dataset.users (
+  id INT64,
+  name STRING,
+  tags ARRAY<STRING>,
+  meta STRUCT<created TIMESTAMP, score FLOAT64>
+);
+
+CREATE TABLE AS
+SELECT
+  *
+FROM
+  project.dataset.raw;
+
+INSERT INTO
+  project.dataset.users (id, name)
+VALUES
+  (1, 'Ada'),
+  (2, 'Grace');
+
+SELECT
+  u.name,
+  t.tag,
+  COUNT(*) OVER (
+    PARTITION BY
+      u.name
+    ORDER BY
+      t.tag
+  ) AS running
+FROM
+  `project.dataset.users` AS u,
+  UNNEST (u.tags) AS t
+WHERE
+  u.created BETWEEN TIMESTAMP '2026-01-01' AND CURRENT_TIMESTAMP()
+QUALIFY
+  ROW_NUMBER() OVER (
+    PARTITION BY
+      u.name
+    ORDER BY
+      t.tag
+  ) = 1
+ORDER BY
+  u.name;
+
+SELECT
+  SAFE_DIVIDE(SUM(x), COUNT(y)) AS ratio
+FROM
+  dataset.events;
+
+-- scripting
+DECLARE v_count INT64 DEFAULT 0;
+
+SET
+  v_count = v_count + 1;
+
+SELECT
+  v_count;

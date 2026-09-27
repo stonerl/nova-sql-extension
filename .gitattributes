@@ -1,0 +1,4 @@
+SQL.novaextension/Executables/sqls binary
+*.dylib binary
+*.png binary
+*.novaextension/extension.png binary

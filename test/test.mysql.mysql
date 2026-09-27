@@ -1,0 +1,66 @@
+-- MySQL / MariaDB test file (syntax: mysql)
+-- v0.3.11 grammar: RLIKE, procedures, DEFINER
+CREATE TABLE `users` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(100) NOT NULL,
+  `email` VARCHAR(255) UNIQUE,
+  `code` VARCHAR(32),
+  PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
+
+INSERT INTO
+  `users` (`name`, `email`, `code`)
+VALUES
+  ('Ada', 'ada@example.com', 'A-123');
+
+SELECT
+  *
+FROM
+  `users`
+WHERE
+  `code` RLIKE '^A-[0-9]+$';
+
+SELECT
+  *
+FROM
+  `users`
+WHERE
+  `email` REGEXP 'example.com$';
+
+DELIMITER / / CREATE DEFINER = `root` @`localhost` PROCEDURE `add_user` (IN p_name VARCHAR(100)) BEGIN DECLARE v_count INT DEFAULT 0;
+
+WHILE v_count < 3 DO
+INSERT INTO
+  `users` (`name`)
+VALUES
+  (CONCAT(p_name, v_count));
+
+SET
+  v_count = v_count + 1;
+
+END
+WHILE;
+
+END / / DELIMITER;
+
+CALL `add_user` ('test');
+
+SELECT
+  `name`,
+  COUNT(*) AS cnt
+FROM
+  `users`
+GROUP BY
+  `name`
+HAVING
+  cnt > 1
+ORDER BY
+  cnt DESC
+LIMIT
+  5;
+
+SHOW CREATE TABLE `users`;
+
+# hash comment
+SELECT
+  1;

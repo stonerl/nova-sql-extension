@@ -1,0 +1,68 @@
+-- Transact-SQL test file (syntax: tsql)
+-- v0.3.11 grammar: procedures, WHILE loops, OBJECT_ID
+IF OBJECT_ID('dbo.users', 'U') IS NOT NULL
+DROP TABLE dbo.users;
+
+GO
+CREATE TABLE dbo.users (
+  id INT IDENTITY(1, 1) PRIMARY KEY,
+  name NVARCHAR(100) NOT NULL,
+  created DATETIME2 DEFAULT SYSDATETIME()
+);
+
+CREATE PROCEDURE dbo.promote_users @min_orders INT AS BEGIN
+SET
+NOCOUNT ON;
+
+DECLARE @uid INT;
+
+DECLARE cur CURSOR FOR
+SELECT
+  id
+FROM
+  dbo.users;
+
+OPEN cur;
+
+FETCH NEXT
+FROM
+  cur
+INTO
+  @uid;
+
+WHILE @@FETCH_STATUS = 0 BEGIN
+UPDATE dbo.users
+SET
+  name = name + '!'
+WHERE
+  id = @uid;
+
+FETCH NEXT
+FROM
+  cur
+INTO
+  @uid;
+
+END CLOSE cur;
+
+DEALLOCATE cur;
+
+END;
+
+GO
+SELECT
+  TOP 10 u.name,
+  COUNT(o.id) AS cnt
+FROM
+  dbo.users u
+  INNER JOIN dbo.orders o ON o.user_id = u.id
+  CROSS APPLY (
+    SELECT
+      1
+  ) AS marker
+GROUP BY
+  u.name
+HAVING
+  COUNT(o.id) >= @min_orders
+ORDER BY
+  cnt DESC;

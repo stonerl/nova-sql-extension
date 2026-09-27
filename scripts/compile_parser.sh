@@ -18,9 +18,9 @@ mkdir -p $TMP_BUILD_DIR
 pushd $BASEDIR
 
 CFLAGS="${BUILD_FLAGS} -O3" \
-CXXFLAGS="${BUILD_FLAGS} -O3" \
-LDFLAGS="${BUILD_FLAGS} -F${FRAMEWORKS_PATH} -framework SyntaxKit -rpath @loader_path/../Frameworks" \
-PREFIX="$TMP_BUILD_DIR" make install
+  CXXFLAGS="${BUILD_FLAGS} -O3" \
+  LDFLAGS="${BUILD_FLAGS} -F${FRAMEWORKS_PATH} -framework SyntaxKit -rpath @loader_path/../Frameworks" \
+  PREFIX="$TMP_BUILD_DIR" make install
 
 popd
 

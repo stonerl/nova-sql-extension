@@ -2,11 +2,66 @@
   "identifier": "stonerl.sql",
   "name": "SQL",
   "organization": "Toni Förster",
-  "description": "SQL language support for Nova editor — Tree-sitter syntax highlighting, code folding, and completions for multiple dialects.",
-  "version": "1.3.0",
+  "description": "SQL language support for Nova editor — Tree-sitter syntax highlighting, code folding, completions, and hover for multiple dialects.",
+  "version": "2.0.0",
   "license": "MIT License",
   "funding": "https://github.com/sponsors/stonerl",
   "repository": "https://github.com/stonerl/nova-sql-extension",
   "bugs": "https://github.com/stonerl/nova-sql-extension/issues",
-  "categories": ["languages"]
+  "categories": ["languages", "completions"],
+  "main": "main.js",
+  "activationEvents": [
+    "onLanguage:sql-generic",
+    "onLanguage:mysql",
+    "onLanguage:postgresql",
+    "onLanguage:tsql",
+    "onLanguage:plsql",
+    "onLanguage:sqlite",
+    "onLanguage:bigquery",
+    "onLanguage:flinksql",
+    "onLanguage:hiveql",
+    "onLanguage:n1ql",
+    "onLanguage:redshift",
+    "onLanguage:singlestore",
+    "onLanguage:snowflake",
+    "onLanguage:sparksql",
+    "onLanguage:sqlpl",
+    "onLanguage:trino"
+  ],
+  "entitlements": {
+    "process": true,
+    "filesystem": "readonly"
+  },
+  "commands": {
+    "extensions": [
+      {
+        "title": "Restart Language Server",
+        "command": "restartLanguageServer"
+      },
+      {
+        "title": "Language Server Info",
+        "command": "showServerInfo"
+      }
+    ]
+  },
+  "config": [
+    {
+      "key": "stonerl.sql.enable-language-server",
+      "title": "Enable Language Server",
+      "description": "Runs the bundled sqls language server for hover documentation and additional completions in SQL documents. A database connection (configured via ~/.config/sqls/config.yml) unlocks schema-aware hover for tables and columns.",
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    {
+      "key": "stonerl.sql.sqls-binary-path",
+      "title": "Custom sqls Binary Path",
+      "description": "Path to a custom sqls binary. Leave empty to use the bundled, signed language server.",
+      "type": "path",
+      "placeholder": "/usr/local/bin/sqls",
+      "allowFiles": true,
+      "allowFolders": false,
+      "required": false
+    }
+  ]
 }

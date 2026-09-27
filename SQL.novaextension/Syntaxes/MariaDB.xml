@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<syntax name="mariadb">
+  <meta>
+    <name>MariaDB</name>
+    <type>structured</type>
+    <preferred-file-extension>mariadb.sql</preferred-file-extension>
+  </meta>
+
+  <parent>mysql</parent>
+
+  <detectors>
+    <extension priority="1.0">mariadb.sql,mariadb</extension>
+      <!-- Dialect hint: first-line comment overrides extension-based
+         detection for ambiguous files (e.g. plain .sql). -->
+    <match-content
+      lines="1"
+      priority="1.0">(?i)^\s*--\s*(?:@|syntax:\s*)mariadb\b</match-content>
+  </detectors>
+
+  <injection>
+    <expression>(?i)^mariadb$</expression>
+  </injection>
+
+  <comments>
+    <single>
+      <expression>--</expression>
+    </single>
+    <multiline>
+      <starts-with>
+        <expression>/\*</expression>
+      </starts-with>
+      <ends-with>
+        <expression>\*/</expression>
+      </ends-with>
+    </multiline>
+  </comments>
+
+  <indentation>
+    <increase>
+      <!-- Block starters -->
+      <expression>
+        \b(BEGIN|IF|CASE|LOOP|WHILE|REPEAT|TRY|THEN|DO|BEGIN TRY|BEGIN
+        CATCH|FUNCTION|PROCEDURE|DECLARE|BEGIN TRANSACTION)\b.*$
+      </expression>
+
+      <!-- Multi-line control clauses -->
+      <expression>^\s*\b(WHEN|ELSE|ELSIF|EXCEPTION|CATCH)\b.*$</expression>
+
+      <!-- Function calls, expressions, etc. -->
+      <expression>.*\(\s*$</expression>
+
+      <!-- Complex query starters -->
+      <expression>
+        ^\s*(VALUES|SELECT|SET|RETURNING|INTO|IN|FROM|WHERE|ON|USING|WITH)\b.*\(\s*$
+      </expression>
+    </increase>
+
+    <decrease>
+      <!-- Block enders -->
+      <expression>
+        ^\s*\b(END|END IF|END LOOP|END CASE|END TRY|END CATCH|END
+        TRANSACTION|UNTIL|CATCH|ELSE|ELSIF|WHEN|EXCEPTION)\b.*$
+      </expression>
+
+      <!-- Closing parentheses alone on a line -->
+      <expression>^\s*\)\s*$</expression>
+
+      <!-- Function/procedure block closure -->
+      <expression>^\s*END\s*(FUNCTION|PROCEDURE)?\b.*$</expression>
+    </decrease>
+  </indentation>
+
+  <tree-sitter language="sql">
+    <highlights />
+    <folds />
+    <symbols />
+  </tree-sitter>
+</syntax>

@@ -1,3 +1,28 @@
+## 2.0.0 – 2026-09-27
+
+### Added
+
+- **Language server support**: bundled the
+  [sqls](https://github.com/sqls-server/sqls) v0.2.48 language server as a
+  universal, Developer ID–signed binary for hover documentation,
+  schema-aware completions and signature help (enabled by default;
+  hover on tables/columns becomes richer with a DB connection in
+  `~/.config/sqls/config.yml`)
+- **Keyword hover documentation**: hovering SQL keywords (`SELECT`,
+  `RLIKE`, …) now shows an explainer for ~1600 keywords. Implemented by
+  patching the bundled [sqls](https://github.com/sqls-server/sqls)
+  language server (MIT; modification included as
+  `patches/sqls/v0.2.48/keyword-hover.patch`, rebuilt via
+  `scripts/build-sqls.sh`)
+- **Dialect-aware hover links**: the documentation footer links to the
+  docs matching the open file's dialect (e.g. PostgreSQL docs in
+  PostgreSQL files) for all supported dialects
+- **MariaDB syntax**: new dedicated MariaDB document type — `.mariadb.sql`
+  files report `mariadb` instead of `mysql`, with MariaDB-specific hover
+  links and completions served by the MySQL provider
+- New commands: **Restart Language Server**, **Language Server Info**
+- New preferences: `Enable Language Server`, `Custom sqls Binary Path`
+
 ## 1.3.0 – 2026-09-27
 
 ### Added

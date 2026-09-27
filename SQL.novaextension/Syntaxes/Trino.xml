@@ -6,6 +6,11 @@
   </meta>
   <detectors>
     <extension priority="1.0">trino.sql</extension>
+      <!-- Dialect hint: first-line comment overrides extension-based
+         detection for ambiguous files (e.g. plain .sql). -->
+    <match-content
+      lines="1"
+      priority="1.0">(?i)^\s*--\s*(?:@|syntax:\s*)trino\b</match-content>
   </detectors>
 
   <injection>

@@ -1,0 +1,66 @@
+-- Couchbase N1QL test file (syntax: n1ql)
+CREATE PRIMARY INDEX ON `travel-sample`;
+
+CREATE INDEX idx_type ON `travel-sample` (type)
+WHERE
+  type IS NOT NULL;
+
+INSERT INTO
+  `travel-sample` (KEY, VALUE)
+VALUES
+  (
+    'airport_9999',
+    {
+      "type": "airport",
+      "airportname": "Test Field",
+      "city": "Vienna",
+      "geo": {"lat": 48.11, "lon": 16.56}
+    }
+  );
+
+SELECT
+  t.airportname,
+  t.city,
+  (
+    SELECT
+      RAW a.airportname
+    FROM
+      `travel-sample` a
+    WHERE
+      a.type = "airport"
+    LIMIT
+      3
+  ) AS nearby
+FROM
+  `travel-sample` t USE INDEX (idx_type)
+WHERE
+  t.type = "airport"
+  AND t.city LIKE "V%"
+  AND ANY g IN t.geo SATISFIES g.lat > 40 END
+ORDER BY
+  t.airportname
+LIMIT
+  10;
+
+UPDATE `travel-sample` USE INDEX (idx_type)
+SET
+  t.geo = {"lat": 48.2, "lon": 16.3}
+WHERE
+  META(t).id = "airport_1254"
+RETURNING
+  META(t).id;
+
+DELETE FROM `travel-sample` t
+WHERE
+  t.type = "airport"
+  AND t.airportname = "Test Field"
+RETURNING
+  META(t).id AS id;
+
+EXPLAIN
+SELECT
+  *
+FROM
+  `travel-sample`
+WHERE
+  type = "airport";

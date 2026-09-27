@@ -1,0 +1,50 @@
+-- SQLite test file (syntax: sqlite)
+PRAGMA foreign_keys = ON;
+
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL COLLATE NOCASE,
+  email TEXT UNIQUE,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+
+CREATE VIRTUAL TABLE docs USING fts5 (title, body);
+
+CREATE TRIGGER trg_after_insert AFTER INSERT ON users BEGIN
+INSERT INTO
+  audit
+VALUES
+  (NEW.id, 'created');
+
+END;
+
+INSERT INTO
+  users (name, email)
+VALUES
+  ('Ada', 'ada@example.com');
+
+SELECT
+  u.name,
+  COUNT(*) AS n
+FROM
+  users u
+  LEFT JOIN orders o ON o.user_id = u.id
+WHERE
+  u.name LIKE 'a%' ESCAPE '\'
+GROUP BY
+  u.name
+HAVING
+  n > 1
+ORDER BY
+  n DESC
+LIMIT
+  10
+OFFSET
+  5;
+
+SELECT
+  json_extract(payload, '$.type') AS kind
+FROM
+  events
+WHERE
+  json_valid(payload);

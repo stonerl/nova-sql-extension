@@ -2,3 +2,4 @@ build/
 tree-sitter-sql/target/
 tree-sitter-sql/Cargo.lock
 tmp/
+scripts/__pycache__/

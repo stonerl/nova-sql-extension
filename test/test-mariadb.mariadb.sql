@@ -1,0 +1,130 @@
+-- complex_symbols_test.sql
+-- 1. Base tables
+CREATE TABLE department (id SERIAL PRIMARY KEY, name TEXT);
+
+CREATE TABLE employee (
+  id SERIAL PRIMARY KEY,
+  dept_id INT REFERENCES department (id),
+  first_name TEXT,
+  last_name TEXT,
+  salary NUMERIC DEFAULT 0,
+  hire_date DATE DEFAULT CURRENT_DATE
+);
+
+CREATE TABLE payroll (
+  emp_id INT REFERENCES employee (id),
+  salary NUMERIC,
+  pay_date DATE
+);
+
+CREATE TABLE audit_log (table_name TEXT, changed_at TIMESTAMP);
+
+-- 2. Top-level CTE chain
+WITH
+  d_cte AS (
+    SELECT
+      id,
+      name
+    FROM
+      department
+  ),
+  e_cte AS (
+    SELECT
+      id,
+      CONCAT(first_name, ' ', last_name) AS full_name,
+      dept_id
+    FROM
+      employee
+      JOIN d_cte USING (id)
+  )
+SELECT
+  *
+FROM
+  e_cte;
+
+-- 3. Function with inner CTE and nested loops
+CREATE FUNCTION f_calculate_budget (in_dept INT) RETURNS NUMERIC AS $$ DECLARE total NUMERIC := 0;
+
+BEGIN
+-- inner CTE nested inside function
+WITH
+  emp_cte AS (
+    SELECT
+      id
+    FROM
+      employee
+    WHERE
+      dept_id = in_dept
+  )
+SELECT
+  SUM(p.salary) INTO total
+FROM
+  payroll p
+  JOIN emp_cte e ON p.emp_id = e.id;
+
+RETURN total;
+
+END;
+
+$$ LANGUAGE plpgsql;
+
+-- 4. Procedure with nested IF/ELSIF
+CREATE PROCEDURE p_raise_salaries (in_pct NUMERIC) LANGUAGE plpgsql AS $$
+BEGIN IF in_pct >= 20 THEN RAISE NOTICE 'Huge increase';
+
+ELSIF in_pct >= 10 THEN RAISE NOTICE 'Moderate increase';
+
+ELSE RAISE NOTICE 'Minor or no increase';
+
+END IF;
+
+-- call budget function as part of procedure
+PERFORM f_calculate_budget (1);
+
+END;
+
+$$;
+
+-- 5. Trigger + helper function
+CREATE FUNCTION trg_log_salary_changes () RETURNS trigger AS $$
+BEGIN
+INSERT INTO
+  audit_log (table_name, changed_at)
+VALUES
+  ('employee', NOW());
+
+RETURN NEW;
+
+END;
+
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER salary_change AFTER
+UPDATE OF salary ON employee FOR EACH ROW
+EXECUTE FUNCTION trg_log_salary_changes ();
+
+-- 6. Index
+CREATE INDEX idx_employee_lastname ON employee (last_name);
+
+-- 7. View
+CREATE VIEW v_dept_summary AS
+SELECT
+  d.name,
+  COUNT(e.id) AS employee_count,
+  AVG (e.salary) AS avg_salary
+FROM
+  department d
+  LEFT JOIN employee e ON d.id = e.dept_id
+GROUP BY
+  d.name;
+
+CREATE VIEW nets AS
+SELECT
+  d.name,
+  COUNT(e.id) AS employee_count,
+  AVG (e.salary) AS avg_salary
+FROM
+  department d
+  LEFT JOIN employee e ON d.id = e.dept_id
+GROUP BY
+  d.name;

@@ -1,0 +1,21 @@
+diff --git a/internal/lsp/client.go b/internal/lsp/client.go
+index d8d8c56..ea9d775 100644
+--- a/internal/lsp/client.go
++++ b/internal/lsp/client.go
+@@ -34,12 +34,11 @@ func (m *Messenger) ShowLog(ctx context.Context, message string) error {
+ }
+ 
+ func (m *Messenger) ShowInfo(ctx context.Context, message string) error {
++	// Log-only: no-database is an expected state (e.g. keyword-only mode);
++	// Nova renders window/showMessage notifications as user-facing popups,
++	// so informational notices stay in the Extension Console instead.
+ 	log.Println("Send Message:", message)
+-	params := &ShowMessageParams{
+-		Type:    Info,
+-		Message: message,
+-	}
+-	return m.conn.Notify(ctx, "window/showMessage", params)
++	return nil
+ }
+ 
+ func (m *Messenger) ShowWarning(ctx context.Context, message string) error {

@@ -1,3 +1,20 @@
+## 2.0.1 – 2026-09-30
+
+### Fixed
+
+- The language server is now stopped explicitly on extension
+  deactivation, in addition to Nova's disposal of `nova.subscriptions`
+- Crash detection and automatic restart for the bundled language server:
+  launch failures and unexpected stops are now detected via Nova's
+  `onDidStop` event and the server is relaunched with exponential
+  backoff (1 s to 30 s cap; a stable run of over 60 s resets the
+  backoff)
+
+### Changed
+
+- The _Language Server Info_ report now includes the server's live
+  state (`running`/`stopped`)
+
 ## 2.0.0 – 2026-09-27
 
 ### Added

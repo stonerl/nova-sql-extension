@@ -22,6 +22,8 @@ const SQL_SYNTAXES = [
 
 const PREF_PREFIX = "stonerl.sql.";
 
+let sqlsServer = null;
+
 class SqlsLanguageServer {
   constructor() {
     this.languageClient = null;
@@ -94,6 +96,7 @@ class SqlsLanguageServer {
 
 exports.activate = function () {
   const server = new SqlsLanguageServer();
+  sqlsServer = server;
 
   // Respect the enable-language-server preference; start once per editor
   // opening like most Nova LSP extensions do (activation events already
@@ -137,5 +140,9 @@ exports.activate = function () {
 };
 
 exports.deactivate = function () {
-  // LanguageClient is disposed via nova.subscriptions.
+  // Explicit stop before Nova disposes nova.subscriptions.
+  if (sqlsServer) {
+    sqlsServer.stop();
+    sqlsServer = null;
+  }
 };

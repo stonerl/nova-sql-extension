@@ -22,11 +22,19 @@ const SQL_SYNTAXES = [
 
 const PREF_PREFIX = "stonerl.sql.";
 
+const RESTART_BASE_DELAY_MS = 1000;
+const RESTART_MAX_DELAY_MS = 30000;
+const RESTART_STABLE_UPTIME_MS = 60000;
+
 let sqlsServer = null;
 
 class SqlsLanguageServer {
   constructor() {
     this.languageClient = null;
+    this.didStopDisposable = null;
+    this.restartAttempts = 0;
+    this.restartTimer = null;
+    this.startedAt = 0;
   }
 
   start() {
@@ -56,22 +64,36 @@ class SqlsLanguageServer {
       clientOptions,
     );
 
-    try {
-      client.start();
-      console.log("sqls language server started:", binaryPath);
-      nova.subscriptions.add(client);
-      this.languageClient = client;
-    } catch (err) {
-      console.error("Failed to start sqls language server:", err);
-      if (nova.inDevMode()) {
-        nova.workspace.showInformativeMessage(
-          "The SQL language server could not be started. Check the Extension Console for details.",
-        );
+    // Register before start(): launch failures are reported
+    // asynchronously via onDidStop, not thrown synchronously.
+    this.didStopDisposable = client.onDidStop((err) => {
+      if (this.languageClient !== client) return;
+
+      this.languageClient = null;
+      if (err) {
+        console.error("sqls stopped unexpectedly:", err);
+        this.scheduleRestart();
       }
-    }
+    });
+
+    client.start();
+    this.startedAt = Date.now();
+    console.log("Starting sqls language server:", binaryPath);
+    nova.subscriptions.add(client);
+    this.languageClient = client;
   }
 
   stop() {
+    if (this.restartTimer) {
+      clearTimeout(this.restartTimer);
+      this.restartTimer = null;
+    }
+    if (this.didStopDisposable) {
+      this.didStopDisposable.dispose();
+      this.didStopDisposable = null;
+    }
+    this.restartAttempts = 0;
+
     if (this.languageClient) {
       this.languageClient.stop();
       nova.subscriptions.remove(this.languageClient);
@@ -83,6 +105,37 @@ class SqlsLanguageServer {
   restart() {
     this.stop();
     this.start();
+  }
+
+  scheduleRestart() {
+    if (this.restartTimer) return;
+
+    const uptime = Date.now() - this.startedAt;
+    if (uptime > RESTART_STABLE_UPTIME_MS) {
+      this.restartAttempts = 0;
+    }
+
+    const delay = Math.min(
+      RESTART_BASE_DELAY_MS * 2 ** this.restartAttempts,
+      RESTART_MAX_DELAY_MS,
+    );
+    this.restartAttempts += 1;
+
+    console.warn(
+      `Restarting sqls in ${delay}ms (attempt ${this.restartAttempts})`,
+    );
+    if (nova.inDevMode() && this.restartAttempts === 1) {
+      nova.workspace.showInformativeMessage(
+        "SQL language server stopped unexpectedly. Restarting…",
+      );
+    }
+
+    this.restartTimer = setTimeout(() => {
+      this.restartTimer = null;
+      if (!nova.config.get(PREF_PREFIX + "enable-language-server")) return;
+      if (this.languageClient) return;
+      this.start();
+    }, delay);
   }
 
   configuredBinaryPath() {
@@ -129,9 +182,11 @@ exports.activate = function () {
     const enabled = nova.config.get(PREF_PREFIX + "enable-language-server");
     const path = server.configuredBinaryPath();
     const exists = nova.fs.access(path, nova.fs.F_OK);
+    const running = !!(server.languageClient && server.languageClient.running);
     await nova.workspace.showInformativeMessage(
       [
         `Language server: ${enabled ? "enabled" : "disabled"}`,
+        `Server state: ${running ? "running" : "stopped"}`,
         `Binary: ${path}`,
         exists ? "Binary found." : "Binary NOT found — check the path.",
       ].join("\n"),

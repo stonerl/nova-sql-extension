@@ -6,9 +6,10 @@ lexer matches against) and emits internal/handler/keyword_docs.go containing
 a `keywordDocs` map[string]string with Markdown hover content.
 
 Tiers:
-  T1 (~45)  rich docs: classification, description, example, vendor-docs link
-  T2 (~100) one-line docs
+  T1 (~70)  rich docs: classification, description, example, vendor-docs link
+  T2 (~180) one-line docs
   T3 (rest) auto-classified one-liners by curated category sets
+  EXTRA (~70) grammar-vocabulary words absent from sqls' dialect tables
 
 Original wording throughout — no verbatim third-party documentation.
 """
@@ -1339,8 +1340,78 @@ CLASS_MODIFIER = {
 }
 
 # Multiword phrases (hover text joined with spaces)
-T1_MULTI = {k: v for k, v in T1.items() if " " in k}
+T1_MULTI = {k: v for k, v in T1.items() if " " not in k}
 T1_SINGLE = {k: v for k, v in T1.items() if " " not in k}
+
+# Grammar-vocabulary words absent from sqls' dialect tables (tree-sitter
+# parser knows them; the sqls lexer does not). Merged into the keyword
+# universe so hover + completions cover every word the extension parses.
+EXTRA_KEYWORDS = {
+    "AVRO": "**Storage format** (Hive/Spark) — Avro-backed table storage for `STORED AS AVRO`.",
+    "BIGSERIAL": "**Data type** (PostgreSQL) — auto-incrementing 8-byte integer (`BIGINT` + sequence default).",
+    "BIN_PACK": "**Storage parameter** (SingleStore) — columnar bin-packing layout option.",
+    "BOX2D": "**Data type** (PostGIS) — 2D bounding box geometry.",
+    "BOX3D": "**Data type** (PostGIS) — 3D bounding box geometry.",
+    "BRIN": "**Index method** (PostgreSQL) — Block Range Index; compact index for large append-only tables.",
+    "CACHED": "**Table option** (Impala) — table data cached in memory.",
+    "DATETIME2": "**Data type** (T-SQL) — higher-precision `DATETIME` variant.",
+    "DATETIMEOFFSET": "**Data type** (T-SQL) — `DATETIME2` plus UTC time-zone offset.",
+    "FOLLOWS": "**Trigger clause** (MariaDB) — fires the trigger after the named one.",
+    "FORCE_NOT_NULL": "**COPY option** (PostgreSQL) — CSV: never read listed columns as NULL.",
+    "FORCE_NULL": "**COPY option** (PostgreSQL) — CSV: always read listed columns as NULL when empty/quoted.",
+    "FORCE_QUOTE": "**COPY option** (PostgreSQL) — CSV: quote all non-NULL values in listed columns.",
+    "FORMATTED": "**DESCRIBE modifier** (Hive) — extended, formatted output for `DESCRIBE FORMATTED`.",
+    "GEOGRAPHY": "**Data type** — WGS84 spheroidal spatial data (PostGIS, Redshift, BigQuery).",
+    "GEOMETRY": "**Data type** — planar spatial data (PostGIS, MySQL, Redshift).",
+    "GIN": "**Index method** (PostgreSQL) — inverted index for composite values (arrays, JSONB, full text).",
+    "GIST": "**Index method** (PostgreSQL) — Generalized Search Tree; basis for spatial/exclusion indexes.",
+    "HASH": "**Index/join method** — hash-based index or join algorithm option.",
+    "IMAGE": "**Data type** (T-SQL, deprecated) — binary large object; use `VARBINARY(MAX)`.",
+    "INCREMENTAL": "**Statistics/refresh mode** — process only changed data.",
+    "INET": "**Data type** (PostgreSQL) — IPv4/IPv6 host address.",
+    "INPATH": "**LOAD clause** (Hive) — source path for `LOAD DATA INPATH`.",
+    "JSONB": "**Data type** (PostgreSQL) — binary JSON with indexing support.",
+    "JSONFILE": "**Storage format** (Impala) — JSON document files.",
+    "MAIN": "**Table option** (Impala/HBase) — main storage designation.",
+    "MEDIUMINT": "**Data type** (MySQL family) — 3-byte integer.",
+    "METADATA": "**Clause** — metadata-only operations (e.g. `ALTER TABLE … ALTER COLUMN … SET DATA TYPE` variants, Snowflake `SHOW` scopes).",
+    "MONEY": "**Data type** — currency amount with fixed scale (PostgreSQL, T-SQL).",
+    "NOSCAN": "**Table option** (Hive) — skip scanning the table during `ANALYZE`.",
+    "OBJECT_ID": "**Function** (T-SQL) — returns the database object ID for a schema-scoped name.",
+    "OID": "**Data type** (PostgreSQL) — object identifier, an internal system type.",
+    "PERMISSIVE": "**RLS policy clause** (PostgreSQL) — policy grants access by default; filters or adds rows.",
+    "PLAIN": "**TOAST storage strategy** (PostgreSQL) — inline uncompressed storage.",
+    "RCFILE": "**Storage format** (Hive) — Record Columnar File.",
+    "REGNAMESPACE": "**Data type** (PostgreSQL) — cast of a schema name to its OID.",
+    "REGPROC": "**Data type** (PostgreSQL) — cast of a function name to its OID.",
+    "REGTYPE": "**Data type** (PostgreSQL) — cast of a type name to its OID.",
+    "RESTRICTED": "**RLS policy clause** (PostgreSQL) — policy restricts access by default.",
+    "RESTRICTIVE": "**RLS policy clause** (PostgreSQL) — all restrictive policies must pass for a row.",
+    "REWRITE": "**Clause** (PostgreSQL) — `REFRESH MATERIALIZED VIEW … WITH/WITHOUT DATA` controls whether materialized data is rewritten.",
+    "SAFE": "**Function modifier** (BigQuery) — `SAFE.` prefix returns NULL instead of erroring.",
+    "SEQUENCEFILE": "**Storage format** (Hive) — compressed sequence file storage.",
+    "SERIAL2": "**Data type** (PostgreSQL) — auto-incrementing 2-byte integer (`SMALLSERIAL`).",
+    "SERIAL4": "**Data type** (PostgreSQL) — auto-incrementing 4-byte integer (`SERIAL`).",
+    "SERIAL8": "**Data type** (PostgreSQL) — auto-incrementing 8-byte integer (`BIGSERIAL`).",
+    "SMALLDATETIME": "**Data type** (T-SQL) — `DATETIME` with minute precision.",
+    "SMALLMONEY": "**Data type** (T-SQL) — currency amount, 4 bytes.",
+    "SMALLSERIAL": "**Data type** (PostgreSQL) — auto-incrementing 2-byte integer.",
+    "SORT": "**Clause** (Impala/Hive) — `SORT BY` ordering within partitions.",
+    "SPGIST": "**Index method** (PostgreSQL) — Space-partitioned GiST for non-balanced data (points, text).",
+    "STATS": "**Clause** (Impala) — `COMPUTE STATS` table statistics.",
+    "TBLPROPERTIES": "**Table option** (Hive/Spark) — arbitrary key-value table properties.",
+    "TEXTFILE": "**Storage format** (Hive) — default delimited text storage.",
+    "TIMESTAMPTZ": "**Data type** (PostgreSQL) — timestamp stored in UTC, rendered per zone.",
+    "TINYINT": "**Data type** — 1-byte integer (MySQL family, Hive).",
+    "UNCACHED": "**Table option** (Impala) — table data not cached in memory.",
+    "UNSAFE": "**Function attribute** (PostgreSQL) — marks a support function as unsafe for parallelism.",
+    "VOLATILE": "**Function attribute** (PostgreSQL) — value can change within a scan; no optimization.",
+    "COMPOUND": "**Sort key modifier** (Redshift) — `COMPOUND SORTKEY`: keys applied in order, prefix queries still prune.",
+    "ENCODE": "**Column option** (Redshift) — column compression encoding (`ENCODE AUTO` or `ENCODE ZSTD`).",
+    "EVEN": "**Dist style** (Redshift) — `DISTSTYLE EVEN`: rows round-robin across nodes.",
+    "GO": "**Batch separator** (T-SQL) — signals the end of a batch to `sqlcmd`/SSMS; not part of the SQL language itself.",
+    "INTERLEAVED": "**Sort key modifier** (Redshift) — `INTERLEAVED SORTKEY`: keys weighted equally, good for equality filters on any column.",
+}
 
 TEMPLATES = {
     "statement": "**SQL statement keyword.** Starts or governs a statement.",
@@ -1402,6 +1473,9 @@ def main():
     # words like RLIKE live there, not in the core map).
     pairs = re.findall(r'"([A-Z_0-9]+)":\s+(\w+),', keyword_go)
     keywords = {kw: kind for kw, kind in pairs}
+    for extra_kw, extra_doc in EXTRA_KEYWORDS.items():
+        if extra_kw not in keywords:
+            keywords[extra_kw] = "KEYWORD"
     if not keywords:
         print("error: no keywords parsed from dialect/keyword.go", file=sys.stderr)
         sys.exit(1)
@@ -1438,6 +1512,8 @@ def main():
                 links[kw] = kw_links
         elif kw in T2:
             docs[kw] = T2[kw]
+        elif kw in EXTRA_KEYWORDS:
+            docs[kw] = EXTRA_KEYWORDS[kw]
         else:
             docs[kw] = classify(kw, kind)
 
@@ -1513,6 +1589,21 @@ def main():
     ]
     for kw in dialect_kw:
         lines.append(f"\t{go_str(kw)}: true,")
+    lines.append("}")
+    lines.append("")
+
+    # coreKeywords: the core keyword table only. Used by the completion
+    # handler as the fallback keyword list for documents whose dialect has
+    # no sqls driver (generic/cloud dialects) — instead of the sqlite list
+    # DataBaseKeywords() defaults to.
+    core_kw = sorted({kw for kw, _ in pairs})
+    lines += [
+        "// coreKeywords: sqls' core keyword table (dialect/keyword.go).",
+        "// Generated by scripts/gen-keyword-docs.py.",
+        "var coreKeywords = []string{",
+    ]
+    for kw in core_kw:
+        lines.append(f"\t{go_str(kw)},")
     lines.append("}")
     lines.append("")
 

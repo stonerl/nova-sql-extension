@@ -72,7 +72,8 @@ language server (a universal, Developer ID–signed binary — no runtime
 dependencies). When enabled (default), it provides:
 
 - **Keyword hover documentation** — hovering `SELECT`, `WHERE`, `RLIKE`,
-  … explains the keyword: ~1600 keywords covered. Reference links in the
+  … explains the keyword: ~1650 keywords covered, spanning the full
+  vocabulary of the bundled grammar. Reference links in the
   footer match the open file's dialect — PostgreSQL docs in PostgreSQL
   files, MySQL docs in MySQL files, MariaDB Knowledge Base in MariaDB
   files, Microsoft Learn in T-SQL files, and so on for all supported
@@ -82,6 +83,11 @@ dependencies). When enabled (default), it provides:
   database connection is configured
 - **Schema-aware completions** — tables, columns and JOIN suggestions when
   a database connection is configured
+- **Dialect-correct keyword completions** — without a database
+  connection, keyword and function completions are picked from the list
+  matching the document's dialect (MySQL, PostgreSQL, T-SQL, SQLite,
+  Oracle); dialects without an sqls driver (Snowflake, BigQuery, Trino,
+  …) get the core SQL keyword table
 - **Signature help** for function calls
 
 Everything works without a database too, but hover on table/column names
@@ -94,6 +100,15 @@ connections:
   - driver: "postgresql"
     dataSourceName: "host=127.0.0.1 port=5432 user=postgres dbname=mydb sslmode=disable"
 ```
+
+## Completions
+
+Nova-side completions (`Completions/SQL.xml`) cover ~4100 entries across
+all 16 dialects: per-dialect keyword, datatype and function sets. The
+driver-backed dialects (MySQL/MariaDB, PostgreSQL, T-SQL, SQLite, PL/SQL)
+are generated from the sqls dialect lists; the cloud/embedded dialects
+(Snowflake, BigQuery, Redshift, SparkSQL, Trino, HiveQL, FlinkSQL,
+SingleStore, N1QL, SQL PL) carry curated lists.
 
 Or set a custom binary path / disable the server entirely in
 Extension Preferences. Commands: **Restart Language Server** and

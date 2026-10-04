@@ -47,9 +47,13 @@ done
 # against the repo root — the /tmp BUILD_DIR below avoids that).
 grep -q "findKeywordNode" src/internal/handler/hover.go
 grep -q "func keywordHover" src/internal/handler/keyword_hover.go
+grep -q "languageIDDrivers" src/internal/handler/completion.go
+grep -q "FallbackKeywords" src/internal/completer/completer.go
 grep -q "Log-only" src/internal/lsp/client.go
 python3 "${GEN}" src > src/internal/handler/keyword_docs.go
 grep -q "most fundamental" src/internal/handler/keyword_docs.go
+grep -q "var coreKeywords" src/internal/handler/keyword_docs.go
+gofmt -l src/internal/handler/completion.go | grep -q . && { echo "completion.go not gofmt-clean"; exit 1; } || true
 
 # --- 3. Build both architectures (CGO for sqlite3) ---------------------
 CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -C src -trimpath -ldflags "-s -w" -o "${BUILD_DIR}/exe-x64/sqls" ./

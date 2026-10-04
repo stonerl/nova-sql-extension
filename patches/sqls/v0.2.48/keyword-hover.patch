@@ -3868,3 +3868,76 @@ index 0000000..2806462
 +	}
 +	return fmt.Sprintf("\n\nDocs: [%s: %s](%s)", dialectLabels[vendor], kw, url)
 +}
+diff --git a/internal/completer/completer.go b/internal/completer/completer.go
+index a690cc9..cf4e2b7 100644
+--- a/internal/completer/completer.go
++++ b/internal/completer/completer.go
+@@ -72,6 +72,9 @@ func (ct completionType) String() string {
+ type Completer struct {
+ 	DBCache *database.DBCache
+ 	Driver  dialect.DatabaseDriver
++	// FallbackKeywords is used instead of the driver keyword list when
++	// Driver is empty (no database connection and no languageId mapping).
++	FallbackKeywords []string
+ }
+ 
+ func NewCompleter(dbCache *database.DBCache) *Completer {
+@@ -187,6 +190,9 @@ func (c *Completer) Complete(text string, params lsp.CompletionParams, lowercase
+ 
+ 	if completionTypeIs(ctx.types, CompletionTypeKeyword) {
+ 		drivers := dialect.DataBaseKeywords(c.Driver)
++		if c.Driver == "" && c.FallbackKeywords != nil {
++			drivers = c.FallbackKeywords
++		}
+ 		items = append(items, c.keywordCandidates(lowercaseKeywords, drivers)...)
+ 	}
+ 	if completionTypeIs(ctx.types, CompletionTypeFunction) {
+diff --git a/internal/handler/completion.go b/internal/handler/completion.go
+index 19143bf..c378bfa 100644
+--- a/internal/handler/completion.go
++++ b/internal/handler/completion.go
+@@ -6,6 +6,7 @@ import (
+ 	"fmt"
+ 
+ 	"github.com/sourcegraph/jsonrpc2"
++	"github.com/sqls-server/sqls/dialect"
+ 	"github.com/sqls-server/sqls/internal/completer"
+ 	"github.com/sqls-server/sqls/internal/lsp"
+ )
+@@ -29,7 +30,15 @@ func (s *Server) handleTextDocumentCompletion(ctx context.Context, conn *jsonrpc
+ 	if s.dbConn != nil {
+ 		c.Driver = s.dbConn.Driver
+ 	} else {
+-		c.Driver = ""
++		// No database: pick the keyword list from the document's dialect
++		// (languageId) so completions match the file, not the default
++		// sqlite list. Dialects without an sqls driver fall back to the
++		// core keyword table.
++		if driver, ok := languageIDDrivers[f.LanguageID]; ok {
++			c.Driver = driver
++		} else {
++			c.FallbackKeywords = coreKeywords
++		}
+ 	}
+ 	completionItems, err := c.Complete(f.Text, params, s.getConfig().LowercaseKeywords)
+ 	if err != nil {
+@@ -37,3 +46,19 @@ func (s *Server) handleTextDocumentCompletion(ctx context.Context, conn *jsonrpc
+ 	}
+ 	return completionItems, nil
+ }
++
++// languageIDDrivers maps Nova syntax names (languageId sent with
++// textDocument/didOpen) to sqls database drivers. Used when no database
++// connection is configured so keyword completions match the document's
++// dialect. Unmapped dialects fall back to coreKeywords.
++var languageIDDrivers = map[string]dialect.DatabaseDriver{
++	"mysql":      dialect.DatabaseDriverMySQL8,
++	"mariadb":    dialect.DatabaseDriverMySQL8,
++	"postgresql": dialect.DatabaseDriverPostgreSQL,
++	"tsql":       dialect.DatabaseDriverMssql,
++	"plsql":      dialect.DatabaseDriverOracle,
++	"sqlite":     dialect.DatabaseDriverSQLite3,
++	"h2":         dialect.DatabaseDriverH2,
++	"vertica":    dialect.DatabaseDriverVertica,
++	"clickhouse": dialect.DatabaseDriverClickhouse,
++}

@@ -8,6 +8,7 @@
 
   <detectors>
     <extension priority="1.0">sql</extension>
+    <extension priority="0.9">ddl</extension>
   </detectors>
 
   <injection>

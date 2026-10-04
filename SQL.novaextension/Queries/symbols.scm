@@ -26,6 +26,37 @@
 )
 
 ; ——————————————————————————————
+; Databases, Schemas, Sequences, Roles
+; ——————————————————————————————
+(
+  (create_database
+     (identifier) @name
+  ) @subtree
+  (#set! role type)
+)
+
+(
+  (create_schema
+     (identifier) @name
+  ) @subtree
+  (#set! role type)
+)
+
+(
+  (create_sequence
+     (object_reference) @name
+  ) @subtree
+  (#set! role property)
+)
+
+(
+  (create_role
+     (identifier) @name
+  ) @subtree
+  (#set! role type)
+)
+
+; ——————————————————————————————
 ; Indexes
 ; ——————————————————————————————
 (
